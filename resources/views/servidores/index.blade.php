@@ -1,41 +1,69 @@
 @extends('layouts.app')
 
+@section('title', 'Servidores')
+
 @section('content')
-  <div class="card">
-    <h1 class="header">Servidores</h1>
+  @if (session('success'))
+    <div class="help" style="color:#065f46; margin-bottom:8px">{{ session('success') }}</div>
+  @endif
 
-    @if (session('success'))
-      <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+  <div class="list-header">
+    <a class="btn btn-primary" href="{{ route('servidores.create') }}">+ Novo</a>
+  </div>
 
-    <a class="btn" href="{{ route('servidores.create') }}">Novo</a>
-
-    <table style="width:100%; border-collapse:collapse; margin-top:12px">
+  <div class="table-wrap">
+    <table class="table">
       <thead>
         <tr>
-          <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Nome</th>
-          <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">CPF</th>
-          <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Função</th>
-          <th style="text-align:left; padding:8px; border-bottom:1px solid #ddd;">Contato</th>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>E-mail</th>
+          <th>Cidade/UF</th>
+          <th>Vínculo</th>
+          <th>Entrada</th>
+          <th>Função</th>
+          <th>Contato</th>
+          <th class="col-acoes">Ações</th>
         </tr>
       </thead>
       <tbody>
-        @forelse ($servidores as $s)
+        @foreach ($servidores as $s)
           <tr>
-            <td style="padding:8px; border-bottom:1px solid #eee;">{{ $s->nome }}</td>
-            <td style="padding:8px; border-bottom:1px solid #eee;">{{ $s->cpf }}</td>
-            <td style="padding:8px; border-bottom:1px solid #eee;">{{ $s->funcao->nome ?? '-' }}</td>
-            <td style="padding:8px; border-bottom:1px solid #eee;">{{ $s->contato ?: '—' }}</td>
-
+            <td class="truncate">{{ $s->nome }}</td>
+            <td>{{ $s->cpf }}</td>
+            <td class="truncate">{{ $s->email }}</td>
+            <td>{{ $s->cidade }}/{{ $s->uf }}</td>
+            <td>{{ $s->vinculo }}</td>
+            <td>
+              @if(!empty($s->dt_entrada))
+                {{ \Illuminate\Support\Carbon::parse($s->dt_entrada)->format('d/m/Y') }}
+              @endif
+            </td>
+            <td class="truncate">{{ $s->funcao->nome ?? '—' }}</td>
+            <td>{{ $s->contato ?: '—' }}</td>
+            <td class="acoes">
+              <a href="{{ route('servidores.edit',$s->id) }}" class="btn-pill btn-blue">Editar</a>
+              <form action="{{ route('servidores.destroy',$s->id) }}" method="POST" onsubmit="return confirmarExclusao(this)">
+                @csrf @method('DELETE')
+                <button type="submit" class="btn-pill btn-red">Excluir</button>
+              </form>
+            </td>
           </tr>
-        @empty
-          <tr><td colspan="4" style="padding:8px">Nenhum registro</td></tr>
-        @endforelse
+        @endforeach
+        @if ($servidores->isEmpty())
+          <tr><td colspan="9" class="empty">Nenhum servidor cadastrado.</td></tr>
+        @endif
       </tbody>
     </table>
-
-    <div style="margin-top:10px">
-      {{ $servidores->links() }}
-    </div>
   </div>
+
+  <div class="pager">
+    {{ $servidores->onEachSide(1)->links() }}
+  </div>
+
+  <script>
+    function confirmarExclusao(form){
+      return confirm('Tem certeza que deseja excluir este registro? Esta ação não poderá ser desfeita.');
+    }
+  </script>
 @endsection

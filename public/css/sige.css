@@ -201,3 +201,66 @@ select:focus {
   color: #dc2626;
   margin-top: 2px;
 }
+/* header da lista: botão alinhado à direita */
+.list-header{
+  display:flex; justify-content:flex-end; margin-bottom:10px;
+}
+
+/* container com scroll horizontal em telas menores */
+.table-wrap{ overflow:auto; }
+
+/* Tabela padrão */
+.table{
+  width:100%; border-collapse:separate; border-spacing:0;
+  font-size:14px;
+}
+.table thead th{
+  text-align:left; padding:10px 12px;
+  background:#f7fafc; border-bottom:1px solid var(--stroke);
+  white-space:nowrap; font-weight:600;
+}
+.table tbody td{
+  padding:12px; vertical-align:middle; border-bottom:1px solid #eef2f7;
+}
+
+/* Linhas mais compactas e zebra suave */
+.table tbody tr:nth-child(odd){ background:#fafcff; }
+
+/* Células “Ações” alinhadas e estreitas */
+.col-acoes{ width:160px; }
+.acoes{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+/* Botões pílula das ações */
+.btn-pill{
+  display:inline-block; padding:6px 10px; border-radius:999px; border:0; cursor:pointer;
+  font-weight:600; text-decoration:none;
+}
+.btn-blue{ background:#e5efff; color:#1e61b7; }
+.btn-blue:hover{ filter:brightness(.95); }
+.btn-red{ background:#ffe5e5; color:#dc2626; }
+.btn-red:hover{ filter:brightness(.95); }
+
+/* Truncar textos longos em colunas estreitas */
+.truncate{
+  max-width:220px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* Estado vazio e paginação */
+.empty{ text-align:center; color:#6b7280; padding:16px; }
+.pager{ margin-top:12px; }
+
+/* Ajuste do card para a lista */
+.content-card{ padding:18px; }
+
+/* Responsividade simples */
+@media (max-width: 900px){
+  .truncate{ max-width:150px; }
+  .col-acoes{ width:140px; }
+}
+@media (max-width: 640px){
+  .table{ font-size:13px; }
+  .acoes{ gap:6px; }
+}
+/* Títulos padronizados */
+.topbar-title{ font-weight:700; font-size:28px; color:#0b3a73; }
+.section-title{ font-weight:600; font-size:18px; margin:0 0 12px; color:var(--text); }

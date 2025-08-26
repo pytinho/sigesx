@@ -3,7 +3,6 @@
 @section('title','Cadastro')
 
 @section('content')
-  <h1 class="form-title"></h1>
 
   @if (session('success'))
     <div class="help" style="color:#065f46; margin-bottom:8px;">
