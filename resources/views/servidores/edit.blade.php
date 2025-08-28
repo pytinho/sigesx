@@ -2,15 +2,10 @@
 @section('title','Editar Servidor')
 
 @section('content')
-  @if (session('success'))
-    <div class="help" style="color:#065f46; margin-bottom:8px">{{ session('success') }}</div>
-  @endif
-
-  <form method="POST" action="{{ route('servidores.update',$servidor) }}" id="formPessoa">
+  <form method="POST" action="{{ route('servidores.update', $servidor) }}" id="formPessoa">
     @csrf
     @method('PUT')
-
-    {{-- ... seu formulário igual ao create, só usando old(..., $servidor->...) --}}
+    @include('servidores._form') {{-- Aqui $servidor EXISTE e pré-preenche tudo --}}
     <div class="actions">
       <button type="submit" class="btn btn-primary">Salvar</button>
     </div>
