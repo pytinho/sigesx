@@ -17,8 +17,6 @@
         <tr>
           <th>Nome</th>
           <th>CPF</th>
-          <th>E-mail</th>
-          <th>Cidade/UF</th>
           <th>Vínculo</th>
           <th>Entrada</th>
           <th>Função</th>
@@ -31,8 +29,6 @@
           <tr>
             <td class="truncate">{{ $s->nome }}</td>
             <td>{{ $s->cpf }}</td>
-            <td class="truncate">{{ $s->email }}</td>
-            <td>{{ $s->cidade }}/{{ $s->uf }}</td>
             <td>{{ $s->vinculo }}</td>
             <td>
               @if(!empty($s->dt_entrada))
@@ -51,15 +47,49 @@
           </tr>
         @endforeach
         @if ($servidores->isEmpty())
-          <tr><td colspan="9" class="empty">Nenhum servidor cadastrado.</td></tr>
+          <tr><td colspan="7" class="empty">Nenhum servidor cadastrado.</td></tr>
         @endif
       </tbody>
     </table>
   </div>
 
-  <div class="pager">
-    {{ $servidores->onEachSide(1)->links() }}
-  </div>
+ <div class="pager">
+  @if ($servidores->hasPages())
+    <nav class="pagination">
+      {{-- Anterior --}}
+      @if ($servidores->onFirstPage())
+        <span class="page disabled" aria-disabled="true">‹</span>
+      @else
+        <a class="page" href="{{ $servidores->previousPageUrl() }}" rel="prev">‹</a>
+      @endif
+
+      {{-- Números (janela de -2 a +2 da página atual) --}}
+      @php
+        $start = max(1, $servidores->currentPage() - 2);
+        $end   = min($servidores->lastPage(), $servidores->currentPage() + 2);
+      @endphp
+      @for ($page = $start; $page <= $end; $page++)
+        @if ($page == $servidores->currentPage())
+          <span class="page active" aria-current="page">{{ $page }}</span>
+        @else
+          <a class="page" href="{{ $servidores->url($page) }}">{{ $page }}</a>
+        @endif
+      @endfor
+
+      {{-- Próxima --}}
+      @if ($servidores->hasMorePages())
+        <a class="page" href="{{ $servidores->nextPageUrl() }}" rel="next">›</a>
+      @else
+        <span class="page disabled" aria-disabled="true">›</span>
+      @endif
+    
+      <span class="page-info">
+        Mostrando {{ $servidores->firstItem() }}–{{ $servidores->lastItem() }} de {{ $servidores->total() }}
+      </span>
+    </nav>
+  @endif
+</div>
+
 
   <script>
     function confirmarExclusao(form){

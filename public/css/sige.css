@@ -1,18 +1,17 @@
 :root{
-  --bg:#fdfdfd;              /* fundo da página  */
-  --sidebar:#0b3a73;         /* azul da barra lateral */
-  --sidebar-active:#0e4c97;  /* hover/active */
-  --text:#1f2937;            /* cinza escuro do texto */
-  --card:#ffffff;            /* fundo do card */
-  --stroke:#cfd8e3;          /* borda inputs */
-  --primary:#1e61b7;         /* botões/realces */
+  --bg:#fdfdfd;            
+  --sidebar:#0b3a73;         
+  --sidebar-active:#0e4c97; 
+  --text:#1f2937;            
+  --card:#ffffff;           
+  --stroke:#cfd8e3;          
+  --primary:#1e61b7;         
   --primary-hover:#184f93;
-  --muted:#6b7280;           /* labels */
+  --muted:#6b7280;           
   --radius:10px;
 }
 
 *{box-sizing:border-box}
-html,body{height:100%}
 body.sige-body{
   margin:0; 
   display:flex; 
@@ -25,12 +24,13 @@ select {
 }
 
 select:focus {
-  transform: translateY(0); /* Evita deslocamento */
+  transform: translateY(0); 
 }
 
 /* SIDEBAR */
 .sige-sidebar{
   width:200px; 
+  min-height: 100vh;
   background:var(--sidebar); 
   color:#fff; 
   padding:20px 14px; 
@@ -80,7 +80,7 @@ select:focus {
   color:#fff
 }
 
-/* MAIN + TOPBAR */
+/* topbar */
 .sige-main{
   flex:1; 
   padding:24px; 
@@ -89,15 +89,12 @@ select:focus {
   gap:16px
 }
 .topbar{
-  height:56px;
-  background:#539bbf20;
+  background:#eaf3fc;       
   border-radius:10px; 
   display:flex;
   align-items:center; 
   justify-content:space-between; 
   padding:0 16px; 
-  color:#fff;
-  
 }
 .topbar-title{
   font-weight:700;
@@ -121,7 +118,8 @@ select:focus {
 .content-card{
   background:var(--card); 
   border-radius:var(--radius); 
-  padding:22px; min-height:calc(100% - 56px - 16px);
+  padding:22px; 
+  min-height:calc(100% - 56px - 16px);
   box-shadow:0 6px 24px rgba(0,0,0,.08);
 }
 
@@ -174,20 +172,31 @@ select:focus {
   justify-content:flex-end; 
   margin-top:16px
 }
-.btn{
-  height:42px; 
-  padding:0 18px; 
-  border-radius:10px; 
-  border:0; 
-  cursor:pointer; 
-  font-weight:600;
+
+.btn-primary {
+    background: #1e61b7;          /* azul padrão do seu tema */
+    color: #fff;
+    display: inline-flex;         /* flexbox para alinhar ícone + texto */
+    align-items: center;
+    justify-content: center;
+    gap: 6px;                     /* espaço entre ícone e texto */
+    font-weight: 600;
+    padding: 0 16px;
+    height: 40px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;        /* remove sublinhado do link */
 }
-.btn-primary{
-  background:var(--primary); 
-  color:#fff
+
+.btn-primary:hover {
+    background: #184f93;          /* tom mais escuro ao passar o mouse */
+    transform: translateY(-1px);  /* leve destaque */
 }
-.btn-primary:hover{
-  background:var(--primary-hover)
+
+.btn-primary:active {
+    transform: translateY(0);     /* volta ao normal no clique */
 }
 
 /* ESTILOS DE ERRO DE VALIDAÇÃO */
@@ -201,6 +210,7 @@ select:focus {
   color: #dc2626;
   margin-top: 2px;
 }
+
 /* header da lista: botão alinhado à direita */
 .list-header{
   display:flex; justify-content:flex-end; margin-bottom:10px;
@@ -261,6 +271,58 @@ select:focus {
   .table{ font-size:13px; }
   .acoes{ gap:6px; }
 }
-/* Títulos padronizados */
-.topbar-title{ font-weight:700; font-size:28px; color:#0b3a73; }
-.section-title{ font-weight:600; font-size:18px; margin:0 0 12px; color:var(--text); }
+
+/* Pager custom (sem Tailwind/Bootstrap) */
+.pager{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;   /* botões à direita */
+}
+
+.pagination{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+
+.pagination .page,
+.pagination a.page{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:36px;
+  height:36px;
+  padding:0 10px;
+  border-radius:10px;
+  border:1px solid var(--stroke);
+  background:#fff;
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+  transition:.15s;
+}
+
+.pagination .page:hover{
+  filter:brightness(.98);
+}
+
+.pagination .page.active{
+  background:#e5efff;
+  border-color:#c9d8ff;
+  color:#1e61b7;
+}
+
+.pagination .page.disabled{
+  opacity:.5;
+  pointer-events:none;
+}
+
+.pagination .page-info{
+  font-size:12px;
+  color:#6b7280;
+  margin-left:8px;
+}
+
+/* dá um respiro no fim do card pra nada colar na borda arredondada */
+.content-card{ padding-bottom:28px; }
