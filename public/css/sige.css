@@ -326,3 +326,46 @@ select:focus {
 
 /* dá um respiro no fim do card pra nada colar na borda arredondada */
 .content-card{ padding-bottom:28px; }
+/* barra de ferramentas da lista: busca à esquerda, botão à direita */
+.list-tools{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+}
+
+/* form de busca compacto */
+.search-form{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  flex:1;                 /* ocupa o espaço à esquerda */
+  max-width: 620px;
+}
+
+.search-form input[type="text"]{
+  flex:1;
+  height:40px;
+  border:1px solid var(--stroke);
+  border-radius:8px;
+  padding:0 12px;
+  outline:0;
+}
+.search-form input[type="text"]:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(30,97,183,.12);
+}
+
+/* botão clarinho para limpar */
+.btn-light{
+  background:#f3f4f6;
+  color:#111827;
+  border:1px solid #e5e7eb;
+  border-radius:8px;
+  height:40px;
+  padding:0 14px;
+  display:inline-flex; align-items:center; justify-content:center;
+  text-decoration:none; font-weight:600;
+}
+.btn-light:hover{ filter:brightness(.98); }

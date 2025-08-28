@@ -7,9 +7,27 @@
     <div class="help" style="color:#065f46; margin-bottom:8px">{{ session('success') }}</div>
   @endif
 
-  <div class="list-header">
+  <div class="list-tools">
+    <form method="GET" action="{{ route('servidores.index') }}" class="search-form">
+      <input
+        type="text"
+        name="q"
+        value="{{ $q ?? request('q') }}"
+        placeholder="Buscar por nome, CPF, e-mail, cidade, UF, vínculo ou função…"
+        aria-label="Buscar servidores"
+      />
+      @if(!empty($q))
+        <a class="btn btn-light" href="{{ route('servidores.index') }}">Limpar</a>
+      @endif
+      <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+
     <a class="btn btn-primary" href="{{ route('servidores.create') }}">+ Novo</a>
   </div>
+
+  @if(!empty($q))
+    <div class="help" style="margin:6px 0 12px">Filtrando por: <strong>{{ $q }}</strong></div>
+  @endif
 
   <div class="table-wrap">
     <table class="table">
@@ -25,16 +43,12 @@
         </tr>
       </thead>
       <tbody>
-        @foreach ($servidores as $s)
+        @forelse ($servidores as $s)
           <tr>
             <td class="truncate">{{ $s->nome }}</td>
             <td>{{ $s->cpf }}</td>
             <td>{{ $s->vinculo }}</td>
-            <td>
-              @if(!empty($s->dt_entrada))
-                {{ \Illuminate\Support\Carbon::parse($s->dt_entrada)->format('d/m/Y') }}
-              @endif
-            </td>
+            <td>@if($s->dt_entrada) {{ \Illuminate\Support\Carbon::parse($s->dt_entrada)->format('d/m/Y') }} @endif</td>
             <td class="truncate">{{ $s->funcao->nome ?? '—' }}</td>
             <td>{{ $s->contato ?: '—' }}</td>
             <td class="acoes">
@@ -45,15 +59,14 @@
               </form>
             </td>
           </tr>
-        @endforeach
-        @if ($servidores->isEmpty())
-          <tr><td colspan="7" class="empty">Nenhum servidor cadastrado.</td></tr>
-        @endif
+        @empty
+          <tr><td colspan="7" class="empty">Nenhum servidor encontrado.</td></tr>
+        @endforelse
       </tbody>
     </table>
   </div>
 
- <div class="pager">
+   <div class="pager">
   @if ($servidores->hasPages())
     <nav class="pagination">
       {{-- Anterior --}}
@@ -90,10 +103,7 @@
   @endif
 </div>
 
-
   <script>
-    function confirmarExclusao(form){
-      return confirm('Tem certeza que deseja excluir este registro? Esta ação não poderá ser desfeita.');
-    }
+    function confirmarExclusao(){ return confirm('Tem certeza que deseja excluir este registro?'); }
   </script>
 @endsection

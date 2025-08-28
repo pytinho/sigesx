@@ -9,12 +9,32 @@ use Carbon\Carbon;
 
 class ServidorController extends Controller
 {
-    public function index()
-    {
-       
-        $servidores = Servidor::latest()->paginate(10);
-        return view('servidores.index', compact('servidores'));
-    }
+    public function index(Request $request)
+{
+    $q = trim($request->get('q', ''));
+
+    $servidores = \App\Models\Servidor::query()
+        ->with('funcao') // para mostrar o nome da função sem N+1
+        ->when($q !== '', function ($query) use ($q) {
+            $query->where(function ($w) use ($q) {
+                $w->where('nome', 'like', "%{$q}%")
+                  ->orWhere('cpf', 'like', "%{$q}%")
+                  ->orWhere('email', 'like', "%{$q}%")
+                  ->orWhere('cidade', 'like', "%{$q}%")
+                  ->orWhere('uf', 'like', "%{$q}%")
+                  ->orWhere('vinculo', 'like', "%{$q}%")
+                  ->orWhere('contato', 'like', "%{$q}%")
+                  ->orWhereHas('funcao', function ($f) use ($q) {
+                      $f->where('nome', 'like', "%{$q}%");
+                  });
+            });
+        })
+        ->latest()
+        ->paginate(10)
+        ->appends(['q' => $q]); 
+
+    return view('servidores.index', compact('servidores', 'q'));
+}
 
     public function create()
     {
