@@ -6,7 +6,7 @@
   <title>@yield('title','SIGES')</title>
 
   <link rel="stylesheet" href="{{ asset('css/sige.css') }}">
-  @vite(['resources/css/app.css','resources/js/app.js'])
+  
 
   <style>
     /* Ajustes para mensagens de erro individuais */
