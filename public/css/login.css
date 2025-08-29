@@ -1,6 +1,6 @@
 :root{
-  --azul-borda: #0f2e6b;   /* borda dos inputs */
-  --azul-botao: #0b3c95;   /* botão Entrar */
+  --azul-borda: #0f2e6b;    /* borda dos inputs */
+  --azul-botao: #0b3c95;    /* botão Entrar */
   --texto: #0f172a;
   --muted: #6b7280;
   --sombra: 0 10px 28px rgba(0,0,0,.18);
@@ -8,11 +8,11 @@
   --radius: 10px;
 }
 
-/* Resetzin leve */
-* { box-sizing: border-box; }
-html, body { height: 100%; }
+/* Reset leve */
+*{ box-sizing: border-box; }
+html, body{ height: 100%; }
 
-/* Fundo (use uma imagem sua em /public/images) */
+/* Fundo */
 .login-bg{
   min-height: 100vh;
   margin: 0;
@@ -20,7 +20,7 @@ html, body { height: 100%; }
   background: #eaf4ff url("/images/fundologin.jpg") center / cover no-repeat;
 }
 
-/* Centraliza o card */
+/* Centralização do card */
 .login-center{
   min-height: 100vh;
   display: grid;
@@ -30,53 +30,55 @@ html, body { height: 100%; }
 
 /* Card */
 .login-card{
-  width: 340px;                    /* levemente maior p/ respiro */
+  width: 340px;
   background: #fff;
   border: 1px solid var(--borda-card);
   border-radius: var(--radius);
   box-shadow: var(--sombra);
-  padding: 22px 24px 18px;         /* mais espaço interno */
+  padding: 22px 24px 18px;
 }
 
 /* Título */
 .login-title{
   margin: 0 0 14px;
   text-align: center;
-  font-weight: 800;
-  font-size: 14px;                 /* segue pequeno como no protótipo */
+  font: 800 14px system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
   color: #14285c;
   letter-spacing: .35px;
   text-transform: uppercase;
 }
 
-/* Form como grid para espaçamentos consistentes */
+/* Form como grid */
 .login-card form{
   display: grid;
-  row-gap: 10px;
+  row-gap: 12px;
 }
 
-/* Labels e campos */
+/* Labels */
 label{
   display: block;
-  margin: 6px 0 4px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-weight: 700;
-  font-size: 12px;
+  margin: 4px 0 4px;
+  font: 700 12px system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,Cantarell,"Helvetica Neue",Arial;
   color: #1c3067;
 }
 
+/* Campos (classe .control evita perder estilo ao alternar o tipo) */
+.control,
 input[type="email"],
-input[type="password"]{
+input[type="password"],
+.field-pass input[type="text"]{
   width: 100%;
-  height: 40px;                    /* altura uniforme */
+  height: 40px;
   border: 1px solid var(--azul-borda);
   border-radius: 8px;
-  padding: 0 36px 0 12px;          /* espaço para o olho na senha */
-  outline: 0;
+  padding: 0 36px 0 12px;  /* espaço p/ o botão olho */
   background: #fff;
-  transition: box-shadow .18s, border-color .18s;
+  outline: 0;
+  transition: box-shadow .18s, border-color .18s, background .18s;
 }
+.control::placeholder,
 input::placeholder{ color: #7a86a6; }
+.control:focus,
 input:focus{
   border-color: var(--azul-botao);
   box-shadow: 0 0 0 2px rgba(11,60,149,.18);
@@ -109,7 +111,7 @@ input:focus{
 .btn-primary:hover{ filter: brightness(1.06); }
 .btn-primary:active{ transform: translateY(1px); }
 
-/* Links do rodapé do card */
+/* Links do rodapé */
 .login-links{
   text-align: center;
   font-size: 11px;
@@ -123,7 +125,7 @@ input:focus{
 }
 .login-links a:hover{ text-decoration: underline; }
 
-/* Mensagem de erro discreta */
+/* Mensagem de erro */
 .msg-error{
   background: #fef2f2;
   color: #7f1d1d;

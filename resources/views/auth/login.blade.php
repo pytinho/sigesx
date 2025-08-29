@@ -20,35 +20,53 @@
         @csrf
 
         <label for="email">Login:</label>
-        <input type="email" id="email" name="email"
-               value="{{ old('email') }}" placeholder="Insira seu e-mail"
-               autocomplete="username" autofocus required>
+<input class="control" type="email" id="email" name="email"
+       value="{{ old('email') }}" placeholder="Insira seu e-mail"
+       autocomplete="username" autofocus required>
 
-        <label for="password">Senha:</label>
-        <div class="field-pass">
-          <input type="password" id="password" name="password"
-                 placeholder="Insira sua senha de acesso" autocomplete="current-password" required>
-          <button type="button" class="eye" aria-label="Mostrar/ocultar senha">👁️</button>
-        </div>
+<label for="password">Senha:</label>
+<div class="field-pass">
+  <input class="control" type="password" id="password" name="password"
+         placeholder="Insira sua senha de acesso" autocomplete="current-password" required>
+  <button type="button"
+        class="eye"
+        aria-label="Mostrar senha"
+        title="Mostrar senha"
+        data-show="🙊"   {{-- emoji quando a senha está visível --}}
+        data-hide="🙈">  {{-- emoji quando a senha está oculta  --}}
+</button>
+</div>
 
-        <button type="submit" class="btn-primary">Entrar</button>
+<button class="btn-primary" type="submit">Entrar</button>
 
-        <div class="login-links">
-          <a href="#" onclick="alert('Em breve.');return false;">Esqueci minha senha</a>
-          <span> | </span>
-          <a href="#" onclick="alert('Cadastro via administração.');return false;">Não possuo cadastro</a>
-        </div>
-      </form>
-    </section>
-  </main>
 
-  <script>
-    // Alternar visibilidade da senha
-    document.querySelector('.eye').addEventListener('click', function(){
-      const i = document.getElementById('password');
-      i.type = i.type === 'password' ? 'text' : 'password';
-      this.classList.toggle('on');
-    });
-  </script>
-</body>
-</html>
+<script>
+  const eye  = document.querySelector('.eye');
+  const pass = document.getElementById('password');
+
+  const EMOJI_VISIBLE = eye.dataset.show || '🙊'; // quando a senha está visível (type="text")
+  const EMOJI_HIDDEN  = eye.dataset.hide || '🙈'; // quando a senha está oculta  (type="password")
+
+  // sincroniza o botão com o estado inicial do input
+  function syncButton() {
+    const hidden = pass.type === 'password';
+    eye.textContent = hidden ? EMOJI_HIDDEN : EMOJI_VISIBLE;
+    eye.classList.toggle('on', !hidden);
+    eye.setAttribute('aria-label', hidden ? 'Mostrar senha' : 'Ocultar senha');
+    eye.title = hidden ? 'Mostrar senha' : 'Ocultar senha';
+  }
+  syncButton();
+
+  eye.addEventListener('click', () => {
+    const willReveal = pass.type === 'password'; // vai revelar?
+    pass.type = willReveal ? 'text' : 'password';
+    syncButton();
+
+    // mantém o foco e cursor no fim
+    pass.focus();
+    const end = pass.value.length;
+    pass.setSelectionRange(end, end);
+  });
+</script>
+
+
