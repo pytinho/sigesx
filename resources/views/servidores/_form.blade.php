@@ -1,11 +1,10 @@
 {{-- Campos compartilhados entre create e edit --}}
 @php
-  // helper p/ value padrão: old() cai para o atributo do $servidor (se existir)
+  // value padrão: old() cai para o atributo do $servidor (se existir)
   $v = fn($name, $default = '') => old($name, $servidor->$name ?? $default);
 @endphp
 
 <div class="form-grid">
-  {{-- Nome --}}
   <div class="form-group col-6">
     <label for="nome">Nome</label>
     <input type="text" id="nome" name="nome"
@@ -15,7 +14,6 @@
     @error('nome')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- CPF --}}
   <div class="form-group col-3">
     <label for="cpf">CPF</label>
     <input type="text" id="cpf" name="cpf"
@@ -25,7 +23,6 @@
     @error('cpf')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Data de Nascimento --}}
   <div class="form-group col-3">
     <label for="dt_nascimento">Dt Nascimento</label>
     <input type="text" id="dt_nascimento" name="dt_nascimento"
@@ -35,7 +32,6 @@
     @error('dt_nascimento')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- UF --}}
   <div class="form-group col-2">
     <label for="uf">UF</label>
     <select id="uf" name="uf"
@@ -49,7 +45,6 @@
     @error('uf')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Cidade (deixe seu JS preencher se for o caso) --}}
   <div class="form-group col-4">
     <label for="cidade">Cidade</label>
     <select id="cidade" name="cidade"
@@ -60,7 +55,6 @@
     @error('cidade')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- E-mail --}}
   <div class="form-group col-3">
     <label for="email">E-mail</label>
     <input type="email" id="email" name="email"
@@ -70,7 +64,6 @@
     @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Contato --}}
   <div class="form-group col-3">
     <label for="contato">Contato</label>
     <input type="text" id="contato" name="contato"
@@ -81,7 +74,6 @@
     @error('contato')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- CEP --}}
   <div class="form-group col-3">
     <label for="cep">CEP</label>
     <input type="text" id="cep" name="cep"
@@ -92,7 +84,6 @@
     @error('cep')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Endereço --}}
   <div class="form-group col-6">
     <label for="endereco">Endereço</label>
     <input type="text" id="endereco" name="endereco"
@@ -102,7 +93,6 @@
     @error('endereco')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Lote --}}
   <div class="form-group col-3">
     <label for="lote">Lote</label>
     <input type="text" id="lote" name="lote"
@@ -112,7 +102,6 @@
     @error('lote')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Função --}}
   <div class="form-group col-3">
     <label for="funcao_id">Função</label>
     <select id="funcao_id" name="funcao_id"
@@ -125,7 +114,6 @@
     @error('funcao_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Cargo --}}
   <div class="form-group col-3">
     <label for="cargo">Cargo</label>
     <input type="text" id="cargo" name="cargo"
@@ -135,7 +123,6 @@
     @error('cargo')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Vínculo --}}
   <div class="form-group col-3">
     <label for="vinculo">Vínculo</label>
     <select id="vinculo" name="vinculo"
@@ -148,7 +135,6 @@
     @error('vinculo')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Data de entrada --}}
   <div class="form-group col-3">
     <label for="dt_entrada">Data de entrada</label>
     <input type="text" id="dt_entrada" name="dt_entrada"
@@ -158,7 +144,6 @@
     @error('dt_entrada')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Unidade Escolar --}}
   <div class="form-group col-6">
     <label for="unidade_escolar">Unidade Escolar</label>
     <input type="text" id="unidade_escolar" name="unidade_escolar"
@@ -168,7 +153,6 @@
     @error('unidade_escolar')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
-  {{-- Código da UE --}}
   <div class="form-group col-3">
     <label for="codigo_ue">Código da UE</label>
     <input type="text" id="codigo_ue" name="codigo_ue"
@@ -177,4 +161,23 @@
            value="{{ $v('codigo_ue') }}">
     @error('codigo_ue')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
+  
+  <div class="form-group col-3">
+      <label for="carga_horaria">Carga horária (h/semana)</label>
+      <input
+        type="number"
+        id="carga_horaria"
+        name="carga_horaria"
+        class="form-control @error('carga_horaria') is-invalid @enderror"
+        placeholder="40"
+        min="1"
+        max="60"
+        step="1"
+        inputmode="numeric"
+        value="{{ $v('carga_horaria') }}"
+      >
+      <small class="help">Informe em horas semanais (ex.: 20, 30, 40).</small>
+      @error('carga_horaria')<div class="invalid-feedback">{{ $message }}</div>@enderror
+    </div>
+
 </div>

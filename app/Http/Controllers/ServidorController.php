@@ -154,6 +154,8 @@ class ServidorController extends Controller
                 'unidade_escolar' => ['nullable','string','max:180'],
                 'codigo_ue'       => ['nullable','string','max:40'],
                 'contato'         => ['required','string','max:25'],
+                'carga_horaria'  => ['nullable', 'integer', 'min:1', 'max:60'], // ajuste o max se precisar
+
             ],
             [
                 'required'        => 'O campo :attribute é obrigatório.',
@@ -180,6 +182,7 @@ class ServidorController extends Controller
                 'unidade_escolar' => 'Unidade Escolar',
                 'codigo_ue'       => 'Código da UE',
                 'contato'         => 'Contato',
+                'carga_horaria'   => 'Carga Horária',
             ]
         );
 
