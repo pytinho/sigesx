@@ -6,19 +6,11 @@
   <title>@yield('title','SIGES')</title>
 
   <link rel="stylesheet" href="{{ asset('css/sige.css') }}">
-  
 
   <style>
-    /* Ajustes para mensagens de erro individuais */
-    .is-invalid {
-      border-color: #dc2626 !important; /* vermelho */
-      background-color: #fef2f2;
-    }
-    .invalid-feedback {
-      font-size: 12px;
-      color: #dc2626;
-      margin-top: 2px;
-    }
+    /* Apenas pequenos ajustes locais */
+    .is-invalid { border-color:#dc2626 !important; background-color:#fef2f2; }
+    .invalid-feedback { font-size:12px; color:#dc2626; margin-top:2px; }
   </style>
 </head>
 <body class="sige-body">
@@ -36,7 +28,15 @@
       <a class="nav-item" href="#">Declarações</a>
       <a class="nav-item" href="#">Folha de Ponto</a>
       <a class="nav-item" href="#">Arquivos</a>
-      <a class="nav-item" href="#">Sair</a>
+
+      {{-- SAIR: link que dispara um form oculto (POST) --}}
+      <a class="nav-item" href="#"
+         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        Sair
+      </a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none">
+        @csrf
+      </form>
     </nav>
   </aside>
 
@@ -44,9 +44,7 @@
     <header class="topbar">
       <div class="topbar-title">@yield('title','SIGES')</div>
       <div class="topbar-actions">
-        <button class="avatar-btn" title="Perfil">
-          <span class="avatar-initial">👤</span>
-        </button>
+        <button class="avatar-btn" title="Perfil"><span class="avatar-initial">👤</span></button>
       </div>
     </header>
 
