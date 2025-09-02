@@ -13,6 +13,15 @@
     .invalid-feedback { font-size:12px; color:#dc2626; margin-top:2px; }
   </style>
 </head>
+<script>
+  window.addEventListener('pageshow', function (event) {
+    // Se a página veio do BFCache, força reload
+    if (event.persisted) {
+      window.location.reload();
+    }
+  });
+</script>
+
 <body class="sige-body">
 
   <aside class="sige-sidebar">
