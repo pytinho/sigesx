@@ -2,101 +2,92 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Servidor;
-use Barryvdh\DomPDF\Facade\Pdf; // PDF
-use Carbon\Carbon;              // Datas
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf; // barryvdh/laravel-dompdf
 
 class DeclaracaoController extends Controller
 {
+    // Tipos exibidos no select da view
+    private const TIPOS = [
+        'vinculo'   => 'Declaração de Vínculo',
+        'funcao'    => 'Declaração de Função',
+        'frequencia'=> 'Declaração de Frequência',
+    ];
+
     public function index()
     {
-        // Tipos de declaração disponíveis (podemos mover para tabela/config depois)
-        $tipos = [
-            'inicio_atividade'  => 'Declaração de Início de Atividade',
-            'encarregamento'    => 'Declaração de Encarregamento',
-            'atividade_escolar' => 'Declaração de Atividade Escolar',
-        ];
-
+        $tipos = self::TIPOS;                 // <- casa com sua view
         return view('declaracoes.index', compact('tipos'));
     }
 
+    // AJAX: dado um CPF, busca o servidor e retorna campos pra auto-preencher
     public function lookup(Request $request)
     {
-        $cpf = preg_replace('/\D/', '', (string) $request->query('cpf'));
+        abort_unless($request->ajax(), 404);
 
-        if (!$cpf || !$this->cpfValido($cpf)) {
+        $cpfDigits = preg_replace('/\D/', '', (string) $request->query('cpf'));
+        if (strlen($cpfDigits) !== 11) {
             return response()->json(['message' => 'CPF inválido.'], 422);
         }
 
-        $servidor = Servidor::with('funcao')->where('cpf', $cpf)->first();
+        $s = $this->findByCpfDigits($cpfDigits);
 
-        if (!$servidor) {
+        if (!$s) {
             return response()->json(['message' => 'Servidor não encontrado.'], 404);
         }
 
         return response()->json([
-            'id'      => $servidor->id,
-            'nome'    => $servidor->nome,
-            'cpf'     => $servidor->cpf,
-            'email'   => $servidor->email,
-            'contato' => trim(($servidor->ddd ? "({$servidor->ddd}) " : '') . ($servidor->celular ?? '')),
-            'cargo'   => $servidor->cargo,
-            'funcao'  => optional($servidor->funcao)->nome,
-            'entrada' => $servidor->dt_entrada,
-            'saida'   => $servidor->dt_saida,
-            'vinculo' => $servidor->vinculo,
+            'nome'    => $s->nome,
+            'email'   => $s->email,
+            'cargo'   => $s->cargo,
+            'funcao'  => optional($s->funcao)->nome,
         ]);
     }
 
+    // POST: gera o PDF
     public function gerar(Request $request)
     {
         $data = $request->validate([
-            'tipo' => 'required|string',
-            'cpf'  => 'required|string',
+            'tipo' => ['required', 'in:'.implode(',', array_keys(self::TIPOS))],
+            'cpf'  => ['required', 'string'],
         ]);
 
-        $cpf = preg_replace('/\D/', '', $data['cpf']);
+        $cpfDigits = preg_replace('/\D/', '', $data['cpf']);
+        if (strlen($cpfDigits) !== 11) {
+            return back()->withErrors(['cpf' => 'CPF inválido.'])->withInput();
+        }
 
-        $servidor = Servidor::with('funcao')
-            ->where('cpf', $cpf)
-            ->firstOrFail();
+        $servidor = $this->findByCpfDigits($cpfDigits);
+        if (!$servidor) {
+            return back()->withErrors(['cpf' => 'Servidor não encontrado.'])->withInput();
+        }
 
-        // Seleciona o template pelo tipo
-        $view = match ($data['tipo']) {
-            'inicio_atividade'  => 'declaracoes.pdf.inicio_atividade',
-            'encarregamento'    => 'declaracoes.pdf.encarregamento',
-            'atividade_escolar' => 'declaracoes.pdf.atividade_escolar',
-            default             => 'declaracoes.pdf.default',
-        };
-
-        // Payload para o Blade
         $payload = [
+            'titulo'   => self::TIPOS[$data['tipo']],
+            'tipo'     => $data['tipo'],
             'servidor' => $servidor,
-            'hoje'     => Carbon::now()->locale('pt_BR'),
+            'agora'    => now()->locale('pt_BR'),
         ];
 
-        $pdf = Pdf::loadView($view, $payload);
+        // Renderiza o Blade e baixa o PDF
+        $pdf = Pdf::loadView('declaracoes.pdf', $payload)->setPaper('a4');
+        $filename = Str::slug(self::TIPOS[$data['tipo']].' '.$servidor->nome).'.pdf';
 
-        $nomeArquivo = sprintf('declaracao_%s_%s.pdf', $data['tipo'], $cpf);
-
-        // Abra no navegador com stream() se preferir
-        // return $pdf->stream($nomeArquivo);
-        return $pdf->download($nomeArquivo);
+        return $pdf->download($filename);
     }
 
-    private function cpfValido(string $cpf): bool
+    /**
+     * Busca por CPF usando apenas dígitos, independente de máscara no BD.
+     * Funciona mesmo que o CPF esteja salvo como '000.000.000-00'.
+     */
+    private function findByCpfDigits(string $cpfDigits): ?Servidor
     {
-        if (strlen($cpf) !== 11 || preg_match('/^(.)\1{10}$/', $cpf)) return false;
-
-        for ($t = 9; $t < 11; $t++) {
-            $d = 0;
-            for ($c = 0; $c < $t; $c++) {
-                $d += $cpf[$c] * (($t + 1) - $c);
-            }
-            $d = ((10 * $d) % 11) % 10;
-            if ((int)$cpf[$t] !== $d) return false;
-        }
-        return true;
+        // MySQL 5/8 compat: remove ., - e / (ajuste se precisar de +REPLACE)
+        return Servidor::query()
+            ->with('funcao')
+            ->whereRaw("REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), '/', '') = ?", [$cpfDigits])
+            ->first();
     }
 }

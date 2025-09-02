@@ -369,3 +369,27 @@ select:focus {
   text-decoration:none; font-weight:600;
 }
 .btn-light:hover{ filter:brightness(.98); }
+/* Select com cara de form-control (altura e borda iguais) */
+select.form-control{
+  height:40px;
+  border:1px solid var(--stroke);
+  border-radius:8px;
+  padding:0 12px;
+  outline:0;
+  background:#fff;
+}
+select.form-control:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(30,97,183,.12);
+}
+
+/* Readonly igual às outras telas (cara de “preenchido”) */
+.form-control[readonly]{
+  background:#f8fafc;
+  color:#334155;
+}
+
+/* Alerts básicas (mesma paleta do tema) */
+.alert{ padding:10px 12px; border-radius:8px; }
+.alert-success{ background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }
+.alert-error{ background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
