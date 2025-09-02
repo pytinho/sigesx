@@ -1,7 +1,10 @@
-import $ from 'jquery'
-import 'jquery-mask-plugin'
+// resources/js/app.js
+import $ from 'jquery';
+import 'jquery-mask-plugin';
+window.$ = window.jQuery = $;
 
-window.$ = window.jQuery = $
+import './_form'; 
+
 
 //ID do IBGE
 const UF_TO_ID = {

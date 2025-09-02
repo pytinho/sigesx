@@ -12,6 +12,8 @@
     .is-invalid { border-color:#dc2626 !important; background-color:#fef2f2; }
     .invalid-feedback { font-size:12px; color:#dc2626; margin-top:2px; }
   </style>
+  @vite(['resources/js/app.js'])
+
 </head>
 <script>
   window.addEventListener('pageshow', function (event) {
@@ -34,7 +36,7 @@
       <a class="nav-item {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Início</a>
       <a class="nav-item {{ request()->is('servidores/create') ? 'active' : '' }}" href="{{ route('servidores.create') }}">Cadastro</a>
       <a class="nav-item {{ request()->is('servidores') ? 'active' : '' }}" href="{{ route('servidores.index') }}">Servidores</a>
-      <a class="nav-item" href="#">Declarações</a>
+      <a class="nav-item {{ request()->is('declaracoes*') ? 'active' : '' }}" href="{{ route('declaracoes.index') }}">Declarações</a>
       <a class="nav-item" href="#">Folha de Ponto</a>
       <a class="nav-item" href="#">Arquivos</a>
 
