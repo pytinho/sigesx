@@ -11,14 +11,15 @@ class DeclaracaoController extends Controller
 {
     // Tipos exibidos no select da view
     private const TIPOS = [
-        'vinculo'   => 'Declaração de Vínculo',
-        'funcao'    => 'Declaração de Função',
-        'frequencia'=> 'Declaração de Frequência',
+        'vinculo'     => 'Declaração de Vínculo',
+        'funcao'      => 'Declaração de Função',
+        'frequencia'  => 'Declaração de Frequência',
+        'inicio'      => 'Declaração de Início de Atividade', // ✅ novo tipo
     ];
 
     public function index()
     {
-        $tipos = self::TIPOS;                 // <- casa com sua view
+        $tipos = self::TIPOS; // a view já itera em $tipos, então o select ganha a nova opção
         return view('declaracoes.index', compact('tipos'));
     }
 
@@ -33,16 +34,15 @@ class DeclaracaoController extends Controller
         }
 
         $s = $this->findByCpfDigits($cpfDigits);
-
         if (!$s) {
             return response()->json(['message' => 'Servidor não encontrado.'], 404);
         }
 
         return response()->json([
-            'nome'    => $s->nome,
-            'email'   => $s->email,
-            'cargo'   => $s->cargo,
-            'funcao'  => optional($s->funcao)->nome,
+            'nome'   => $s->nome,
+            'email'  => $s->email,
+            'cargo'  => $s->cargo,
+            'funcao' => optional($s->funcao)->nome,
         ]);
     }
 
@@ -71,20 +71,20 @@ class DeclaracaoController extends Controller
             'agora'    => now()->locale('pt_BR'),
         ];
 
-        // Renderiza o Blade e baixa o PDF
-        $pdf = Pdf::loadView('declaracoes.pdf', $payload)->setPaper('a4');
+        // ✅ Seleciona a view do PDF conforme o tipo
+        $view = match ($data['tipo']) {
+            'inicio'     => 'declaracoes.pdf_inicio', // usa dt_entrada no texto "INICIOU"
+            default      => 'declaracoes.pdf',        // seus demais modelos atuais
+        };
+
+        $pdf = Pdf::loadView($view, $payload)->setPaper('a4');
         $filename = Str::slug(self::TIPOS[$data['tipo']].' '.$servidor->nome).'.pdf';
 
         return $pdf->download($filename);
     }
 
-    /**
-     * Busca por CPF usando apenas dígitos, independente de máscara no BD.
-     * Funciona mesmo que o CPF esteja salvo como '000.000.000-00'.
-     */
     private function findByCpfDigits(string $cpfDigits): ?Servidor
     {
-        // MySQL 5/8 compat: remove ., - e / (ajuste se precisar de +REPLACE)
         return Servidor::query()
             ->with('funcao')
             ->whereRaw("REPLACE(REPLACE(REPLACE(cpf, '.', ''), '-', ''), '/', '') = ?", [$cpfDigits])
