@@ -1,0 +1,95 @@
+import $ from 'jquery';
+
+const REQUIRED_SELECTOR = 'input[required], select[required], textarea[required]';
+const EMPTY_CLASS = 'is-empty';
+const FEEDBACK_CLASS = 'field-feedback';
+
+function isFieldEmpty($field) {
+  if (!$field.length || $field.prop('disabled')) {
+    return false;
+  }
+
+  if ($field.is(':checkbox, :radio')) {
+    const group = $(`[name="${$field.attr('name')}"]`);
+    return group.filter(':checked').length === 0;
+  }
+
+  const value = $field.val();
+  if (Array.isArray(value)) {
+    return value.length === 0;
+  }
+
+  return String(value ?? '').trim() === '';
+}
+
+function ensureFeedback($group, message) {
+  let $feedback = $group.find(`.${FEEDBACK_CLASS}`);
+  if (!$feedback.length) {
+    $feedback = $('<div/>', {
+      class: `invalid-feedback ${FEEDBACK_CLASS}`,
+      text: message,
+    }).appendTo($group);
+  }
+  $feedback.show();
+  return $feedback;
+}
+
+function clearFeedback($group) {
+  $group.find(`.${FEEDBACK_CLASS}`).remove();
+}
+
+function validateField($field) {
+  const $group = $field.closest('.form-group');
+  const hasServerFeedback = $group.find('.invalid-feedback').not(`.${FEEDBACK_CLASS}`).length > 0;
+  const message = $field.data('empty-message') || 'Campo obrigatório.';
+  const empty = isFieldEmpty($field);
+
+  if (empty) {
+    $field.addClass(EMPTY_CLASS);
+    if (!hasServerFeedback) {
+      ensureFeedback($group, message);
+    }
+    return true;
+  }
+
+  $field.removeClass(EMPTY_CLASS);
+  if (!hasServerFeedback) {
+    clearFeedback($group);
+  }
+  return false;
+}
+
+function validateForm($form) {
+  let firstInvalid = null;
+  $form.find(REQUIRED_SELECTOR).each((_, element) => {
+    const $field = $(element);
+    const empty = validateField($field);
+    if (empty && !firstInvalid) {
+      firstInvalid = $field;
+    }
+  });
+
+  return firstInvalid;
+}
+
+$(function () {
+  $('form[data-watch-empty]').each((_, form) => {
+    const $form = $(form);
+    const $requiredFields = $form.find(REQUIRED_SELECTOR);
+
+    $requiredFields.on('blur input change', function () {
+      validateField($(this));
+    });
+
+    $form.on('submit', function (event) {
+      const firstInvalid = validateForm($form);
+      if (firstInvalid) {
+        event.preventDefault();
+        firstInvalid.trigger('focus');
+        if (typeof firstInvalid[0].scrollIntoView === 'function') {
+          firstInvalid[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    });
+  });
+});

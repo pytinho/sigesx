@@ -6,6 +6,7 @@
         action="{{ route('servidores.update', $servidor) }}"
         id="formPessoa"
         class="needs-validation"
+        data-watch-empty
         novalidate>
     @csrf
     @method('PUT')

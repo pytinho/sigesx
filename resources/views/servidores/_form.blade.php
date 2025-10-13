@@ -1,8 +1,16 @@
-{{-- Campos compartilhados entre create e edit --}}
 @php
-  // value padrão: old() cai para o atributo do $servidor (se existir)
-  $v = fn($name, $default = '') => old($name, $servidor->$name ?? $default);
+
+  $servidor = $servidor ?? null;
+  $v = function ($name, $default = '') use ($servidor) {
+      return old($name, $servidor?->$name ?? $default);
+  };
 @endphp
+
+@if ($errors->any())
+  <div class="alert alert-danger">
+    <strong>Ops!</strong> Corrija os campos destacados e tente novamente.
+  </div>
+@endif
 
 <div class="form-grid">
   <div class="form-group col-6">
@@ -175,6 +183,7 @@
         step="1"
         inputmode="numeric"
         value="{{ $v('carga_horaria') }}"
+        required
       >
       <small class="help">Informe em horas semanais (ex.: 20, 30, 40).</small>
       @error('carga_horaria')<div class="invalid-feedback">{{ $message }}</div>@enderror

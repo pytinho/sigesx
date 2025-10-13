@@ -152,13 +152,27 @@ select:focus {
   padding:0 12px;
   outline:0;
 }
+.form-control.is-empty,
+  select.is-empty,
+  textarea.is-empty{
+  border-color:#dc2626;
+  background-color:#fef2f2;
+  box-shadow:0 0 0 3px rgba(220,38,38,.12);
+}
+
 .form-control:focus{
-  border-color:var(--primary); 
+  border-color:var(--primary);
   box-shadow:0 0 0 3px rgba(30,97,183,.12)
 }
 .help{
-  font-size:12px; 
+  font-size:12px;
   color:#94a3b8
+}
+
+.field-feedback{
+  font-size:12px;
+  color:#dc2626;
+  margin-top:2px;
 }
 
 .col-6{grid-column:span 6}
