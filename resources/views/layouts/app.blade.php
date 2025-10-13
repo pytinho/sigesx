@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="{{ asset('css/sige.css') }}">
 
   <style>
-    /* Apenas pequenos ajustes locais */
     .is-invalid { border-color:#dc2626 !important; background-color:#fef2f2; }
     .invalid-feedback { font-size:12px; color:#dc2626; margin-top:2px; }
   </style>
@@ -17,7 +16,6 @@
 </head>
 <script>
   window.addEventListener('pageshow', function (event) {
-    // Se a página veio do BFCache, força reload
     if (event.persisted) {
       window.location.reload();
     }
@@ -38,9 +36,9 @@
       <a class="nav-item {{ request()->is('servidores') ? 'active' : '' }}" href="{{ route('servidores.index') }}">Servidores</a>
       <a class="nav-item {{ request()->is('declaracoes*') ? 'active' : '' }}" href="{{ route('declaracoes.index') }}">Declarações</a>
       <a class="nav-item" href="#">Folha de Ponto</a>
-      <a class="nav-item" href="#">Arquivos</a>
+      <a class="nav-item {{ request()->is('pdfs*') ? 'active' : '' }}" href="{{ route('pdfs.index') }}">Arquivo</a>
 
-      {{-- SAIR: link que dispara um form oculto (POST) --}}
+      
       <a class="nav-item" href="#"
          onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         Sair

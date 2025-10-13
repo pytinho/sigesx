@@ -3,7 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ServidorController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DeclaracaoController; // <-- ADICIONADO
+use App\Http\Controllers\DeclaracaoController;
+use App\Http\Controllers\PdfController;
+
+Route::middleware(['auth'])->group(function () {
+  Route::get('/pdfs', [PdfController::class, 'index'])->name('pdfs.index');
+  Route::post('/pdfs', [PdfController::class, 'store'])->name('pdfs.store');
+  Route::get('/pdfs/{pdf}/download', [PdfController::class, 'download'])->name('pdfs.download');
+  Route::delete('/pdfs/{pdf}', [PdfController::class, 'destroy'])->name('pdfs.destroy');
+});
+
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'show'])->name('login');
