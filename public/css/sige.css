@@ -175,6 +175,12 @@ select:focus {
   margin-top:2px;
 }
 
+/* Asterisco para campos obrigatórios */
+.form-group label .req-mark{
+  color:#dc2626;
+  margin-left:4px;
+}
+
 .col-6{grid-column:span 6}
 .col-4{grid-column:span 4}
 .col-3{grid-column:span 3}

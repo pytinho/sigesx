@@ -4,6 +4,18 @@ const REQUIRED_SELECTOR = 'input[required], select[required], textarea[required]
 const EMPTY_CLASS = 'is-empty';
 const FEEDBACK_CLASS = 'field-feedback';
 
+// Adds a visual asterisk to labels of required fields
+function markRequiredFields() {
+  $('.form-group').each((_, group) => {
+    const $group = $(group);
+    const hasRequired = $group.find(REQUIRED_SELECTOR).length > 0;
+    const $label = $group.children('label').first();
+    if (hasRequired && $label.length && !$label.find('.req-mark').length) {
+      $('<span/>', { class: 'req-mark', text: '*' }).appendTo($label);
+    }
+  });
+}
+
 function isFieldEmpty($field) {
   if (!$field.length || $field.prop('disabled')) {
     return false;
@@ -73,6 +85,9 @@ function validateForm($form) {
 }
 
 $(function () {
+  // Mark labels of required inputs with an asterisk
+  markRequiredFields();
+
   $('form[data-watch-empty]').each((_, form) => {
     const $form = $(form);
     const $requiredFields = $form.find(REQUIRED_SELECTOR);

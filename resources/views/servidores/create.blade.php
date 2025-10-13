@@ -6,7 +6,6 @@
         action="{{ route('servidores.store') }}"
         id="formPessoa"
         class="needs-validation"
-        data-watch-empty
         novalidate>
     @csrf
     @include('servidores._form')
