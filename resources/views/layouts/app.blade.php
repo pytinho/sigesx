@@ -3,6 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  @stack('styles')
+
   <title>@yield('title','SIGES')</title>
 
   <link rel="stylesheet" href="{{ asset('css/sige.css') }}">

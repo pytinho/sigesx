@@ -10,19 +10,28 @@ use Illuminate\Support\Str;
 class PdfController extends Controller
 {
   public function index(Request $req)
-  {
+{
+    // filtros
+    $q   = trim((string) $req->input('q', ''));
+    $ano = $req->integer('ano');
+
+    // ordenação (whitelist)
+    $sort = $req->get('sort', 'ano');      // 'ano' | 'titulo' | 'size'
+    $dir  = $req->get('dir',  'desc');     // 'asc' | 'desc'
+    $allowed = ['ano','titulo','size'];
+    if (!in_array($sort, $allowed, true))  { $sort = 'ano'; }
+    $dir = $dir === 'asc' ? 'asc' : 'desc';
+
     $pdfs = Pdf::query()
-      ->when($req->filled('ano'), fn($q)=>$q->where('ano', (int)$req->ano))
-      ->when($req->filled('q'), function($q) use ($req){
-        $t = trim($req->q);
-        $q->where('titulo','like',"%{$t}%");
-      })
-      ->latest()
-      ->paginate(24)
-      ->withQueryString();
+        ->when($ano, fn($qb) => $qb->where('ano', $ano))
+        ->when($q !== '', fn($qb) => $qb->where('titulo', 'like', "%{$q}%"))
+        ->orderBy($sort, $dir)             // ordena pelo campo escolhido
+        ->orderBy('id', 'desc')            // desempate estável
+        ->paginate(24)
+        ->withQueryString();               // mantém filtros/ordem na paginação
 
     return view('pdfs.index', compact('pdfs'));
-  }
+}
 
   public function store(Request $req)
   {
