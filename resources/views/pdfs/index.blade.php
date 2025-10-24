@@ -46,27 +46,19 @@
   >
     @csrf
 
-    {{-- Dropzone ocupa a linha toda --}}
-    <div class="form-group col-12">
+    {{-- Campo simples de upload (mostra nome do arquivo abaixo) --}}
+    <div class="form-group col-12 mb-3">
       <label for="arquivo" class="mb-1">Arquivo (PDF) *</label>
-
-      <div id="dropzone" class="uploader-dropzone" tabindex="0" role="button" aria-describedby="arquivo_help">
-        <div class="uploader-icon">📄</div>
-        <div class="uploader-text">
-          <strong>Clique para selecionar</strong> ou solte aqui (PDF, até ~25MB)
-        </div>
-        <input
-          type="file"
-          id="arquivo"
-          name="arquivo"
-          accept="application/pdf"
-          class="uploader-input @error('arquivo') is-invalid @enderror"
-          required>
-      </div>
-
-      <div id="arquivo_nome" class="uploader-filename" aria-live="polite"></div>
+      <input
+        type="file"
+        id="arquivo"
+        name="arquivo"
+        accept="application/pdf"
+        class="form-control @error('arquivo') is-invalid @enderror"
+        required
+      >
+      <div id="arquivo_nome" class="text-muted mt-1"></div>
       @error('arquivo')<div class="invalid-feedback" style="display:block">{{ $message }}</div>@enderror
-
     </div>
 
     {{-- Linha com Título (4), Ano (2) e Botão (2) --}}
@@ -107,19 +99,17 @@
   {{-- ================= FILTROS ABAIXO ================= --}}
   <h4 class="section-title section-title--upload mt-4 mb-2">🔍 Busca de Arquivos</h4>
   <form method="GET" class="form-grid filters" style="margin-bottom:30px">
-   
-    {{-- mesma largura do campo "Título" --}}
-   <div class="form-group col-4">
-    <label for="filtro_q">Buscar por título</label>
-    <input
-      type="text"
-      id="filtro_q"
-      name="q"
-      class="form-control"
-      placeholder="Ex: Contrato 123"
-      value="{{ $f['q'] ?? '' }}">
-    </div>
 
+    <div class="form-group col-4">
+      <label for="filtro_q">Buscar por título</label>
+      <input
+        type="text"
+        id="filtro_q"
+        name="q"
+        class="form-control"
+        placeholder="Ex: Contrato 123"
+        value="{{ $f['q'] ?? '' }}">
+    </div>
 
     <div class="form-group col-2">
       <label for="filtro_ano">Ano</label>
@@ -133,13 +123,11 @@
         inputmode="numeric">
     </div>
 
-    {{-- botão alinhado ao rodapé dos campos --}}
     <div class="form-group col-2 align-end">
       <label class="label-placeholder">&nbsp;</label>
       <button class="btn-primary full-w" style="height:40px">Filtrar</button>
     </div>
 
-    {{-- ocupa o restante da linha no desktop --}}
     <div class="spacer"></div>
   </form>
 
@@ -212,48 +200,21 @@
     <div class="empty"><em>Nenhum PDF encontrado.</em></div>
   @endif
 
+</div>
+
 @push('scripts')
 <script>
-  (function () {
-    const dz = document.getElementById('dropzone');
-    const input = document.getElementById('arquivo');
-    const fileName = document.getElementById('arquivo_nome');
+(function () {
+  const input = document.getElementById('arquivo');
+  const fileNameBelow = document.getElementById('arquivo_nome');
+  if (!input || !fileNameBelow) return;
 
-    function updateName(f) {
-      if (!f) { fileName.textContent = ''; return; }
-      fileName.textContent = `Selecionado: ${f.name} (${(f.size/1024/1024).toFixed(2)} MB)`;
-    }
-
-    dz.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); }
-    });
-
-    input.addEventListener('change', () => updateName(input.files?.[0]));
-
-    ['dragenter','dragover'].forEach(evt => {
-      dz.addEventListener(evt, (e) => {
-        e.preventDefault(); e.stopPropagation();
-        dz.classList.add('dragover');
-      });
-    });
-    ['dragleave','drop'].forEach(evt => {
-      dz.addEventListener(evt, (e) => {
-        e.preventDefault(); e.stopPropagation();
-        dz.classList.remove('dragover');
-      });
-    });
-    dz.addEventListener('drop', (e) => {
-      const files = e.dataTransfer.files;
-      if (!files?.length) return;
-      const file = files[0];
-      if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-        alert('Apenas arquivos PDF são permitidos.');
-        return;
-      }
-      input.files = files;
-      updateName(file);
-    });
-  })();
+  input.addEventListener('change', () => {
+    const f = input.files && input.files[0];
+    fileNameBelow.textContent = f ? f.name : '';
+  });
+})();
 </script>
 @endpush
+
 @endsection
