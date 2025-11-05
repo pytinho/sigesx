@@ -33,7 +33,7 @@
     </div>
 
     <nav class="nav">
-      <a class="nav-item {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Início</a>
+      <a class="nav-item {{ request()->is('home') ? 'active' : '' }}" href="{{ url('/') }}">Início</a>
       <a class="nav-item {{ request()->is('servidores/create') ? 'active' : '' }}" href="{{ route('servidores.create') }}">Cadastro</a>
       <a class="nav-item {{ request()->is('servidores') ? 'active' : '' }}" href="{{ route('servidores.index') }}">Servidores</a>
       <a class="nav-item {{ request()->is('declaracoes*') ? 'active' : '' }}" href="{{ route('declaracoes.index') }}">Declarações</a>

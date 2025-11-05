@@ -5,6 +5,8 @@ use App\Http\Controllers\ServidorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DeclaracaoController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\HomeController;
+
 
 Route::middleware(['auth'])->group(function () {
   Route::get('/pdfs', [PdfController::class, 'index'])->name('pdfs.index');
@@ -24,7 +26,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'prevent-back-history'])->group(function () {
-    Route::get('/', fn() => redirect()->route('servidores.index'))->name('home');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
     Route::resource('servidores', ServidorController::class)
          ->parameters(['servidores' => 'servidor']);

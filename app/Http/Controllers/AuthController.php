@@ -10,7 +10,9 @@ class AuthController extends Controller
 {
     public function show()
     {
-        if (Auth::check()) return redirect()->route('home');
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
         return view('auth.login');
     }
 
@@ -22,9 +24,10 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($cred, $request->boolean('remember'))) {
-        $request->session()->regenerate();
-        return redirect()->intended(route('servidores.index'));
-    }
+            $request->session()->regenerate();
+            return redirect()->intended(route('home'));
+        }
+
         throw ValidationException::withMessages([
             'email' => 'Credenciais inválidas.',
         ]);
@@ -35,7 +38,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-            return redirect()->route('login');
-        }
-    
+        return redirect()->route('login');
     }
+}
+
