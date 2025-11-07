@@ -1,0 +1,137 @@
+﻿/* ===== FILTROS ===== */
+.folha-filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px 12px;
+  align-items: end;
+  margin-bottom: 14px;
+}
+
+.folha-filtros .form-group label {
+  font-size: 0.88rem;
+  color: #0b3a73;
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.folha-filtros .form-control {
+  height: 36px;
+  padding: 4px 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* ===== COLUNAS ===== */
+.folha-filtros .col-2 { grid-column: span 2; }
+.folha-filtros .col-3 { grid-column: span 3; }
+.folha-filtros .col-6 { grid-column: span 6; }
+
+/* ===== BOTOES (versão compacta) ===== */
+.btn-primary, .btn-secondary {
+  border: none;
+  border-radius: 5px;
+  padding: 4px 10px;      /* antes: 6px 12px */
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;     /* antes: 0.9rem */
+  width: 100%;
+  height: 34px;           /* antes: 40px */
+  line-height: 1.1;
+}
+
+.btn-primary {
+  background: #1848c9;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #1339a3;
+}
+
+.btn-secondary {
+  background: #e5e7eb;
+  color: #111827;
+  transition: background 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #d6d8db;
+}
+
+
+/* ===== SHEET (BLOCOS) ===== */
+.sheet {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin: 12px 0;
+  padding: 10px 12px;
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.sheet-title {
+  font-weight: 700;
+  color: #0b3a73;
+}
+
+.muted {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+/* ===== TABELA ===== */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tbl th, .tbl td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 10px;
+  font-size: 12px;
+  text-align: center;
+}
+
+.tbl th.sticky-col,
+.tbl td.sticky-col {
+  position: sticky;
+  left: 0;
+  background: #fff;
+  z-index: 1;
+  text-align: left;
+}
+
+/* Altura maior nas linhas da folha */
+.tbl .row-entrada td { height: 28px; }
+.tbl .row-saida td { height: 28px; }
+.tbl .row-ass td { height: 34px; }
+
+.tbl thead th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+.wrap {
+  overflow: auto;
+}
+
+/* ===== IMPRESSÃO ===== */
+@media print {
+  .no-print { display: none !important; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sheet { box-shadow: none; border-color: #d1d5db; }
+}
+
+/* Linha de botoes simetricos */
+.btn-row { display:grid; grid-template-columns: repeat(3, minmax(120px,1fr)); gap: 8px; align-items: end; }
+

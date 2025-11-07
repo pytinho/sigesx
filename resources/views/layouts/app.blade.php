@@ -37,7 +37,7 @@
       <a class="nav-item {{ request()->is('servidores/create') ? 'active' : '' }}" href="{{ route('servidores.create') }}">Cadastro</a>
       <a class="nav-item {{ request()->is('servidores') ? 'active' : '' }}" href="{{ route('servidores.index') }}">Servidores</a>
       <a class="nav-item {{ request()->is('declaracoes*') ? 'active' : '' }}" href="{{ route('declaracoes.index') }}">Declarações</a>
-      <a class="nav-item" href="#">Folha de Ponto</a>
+      <a class="nav-item {{ request()->is('folha*') ? 'active' : '' }}" href="{{ route('folha.index') }}">Folha de Ponto</a>
       <a class="nav-item {{ request()->is('pdfs*') ? 'active' : '' }}" href="{{ route('pdfs.index') }}">Arquivo</a>
 
       
