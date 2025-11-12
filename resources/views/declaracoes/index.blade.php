@@ -32,8 +32,11 @@
 
     <div class="form-group col-3">
       <label for="cpf">CPF</label>
-      <input type="text" name="cpf" id="cpf" class="form-control" placeholder="000.000.000-00" required>
-      <div class="help">Informe o CPF e saia do campo para buscar.</div>
+      <div style="display:flex; gap:6px; align-items:center;">
+        <input type="text" name="cpf" id="cpf" class="form-control" placeholder="000.000.000-00" required style="flex:1 1 auto;">
+        <button type="button" id="btnCpfBuscar" class="btn-primary" title="Buscar por CPF">Buscar</button>
+      </div>
+      <div class="help">Digite o CPF e clique em Buscar.</div>
     </div>
 
     <div class="form-group col-3"><!-- espaçador --></div>
@@ -95,5 +98,16 @@
         alert('Falha na consulta. Verifique sua conexão.');
       }
     });
+  </script>
+  <script>
+    (function(){
+      const $btnBuscar = document.getElementById('btnCpfBuscar');
+      const $cpf = document.getElementById('cpf');
+      if ($btnBuscar && $cpf) {
+        $btnBuscar.addEventListener('click', function(){
+          $cpf.dispatchEvent(new Event('blur'));
+        });
+      }
+    })();
   </script>
 @endsection

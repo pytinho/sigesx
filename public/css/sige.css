@@ -219,6 +219,33 @@ select:focus {
     transform: translateY(0);     /* volta ao normal no clique */
 }
 
+/* Botão secundário padrão */
+.btn-secondary {
+    background: #e5e7eb;          /* cinza claro */
+    color: #111827;               /* texto escuro */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-weight: 600;
+    padding: 0 16px;
+    height: 40px;                 /* mesmo da .btn-primary e .form-control */
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background: #d6d8db;
+    transform: translateY(-1px);
+}
+
+.btn-secondary:active {
+    transform: translateY(0);
+}
+
 /* ESTILOS DE ERRO DE VALIDAÇÃO */
 .is-invalid {
   border-color: #dc2626 !important;   /* vermelho */
