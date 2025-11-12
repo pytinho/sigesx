@@ -152,6 +152,15 @@
     @error('dt_entrada')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 
+  <div class="form-group col-3">
+    <label for="dt_saida">Data de saída *</label>
+    <input type="text" id="dt_saida" name="dt_saida"
+           class="form-control @error('dt_saida') is-invalid @enderror"
+           placeholder="dd/mm/aaaa"
+           value="{{ $v('dt_saida') }}" {{ $servidor ? '' : 'disabled' }}>
+    @error('dt_saida')<div class="invalid-feedback">{{ $message }}</div>@enderror
+    <small class="help">Preencha quando houver desligamento.</small>
+  </div>
   
   <div class="form-group col-3">
       <label for="carga_horaria">Carga horária * (h/semana)</label>
