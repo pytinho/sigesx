@@ -21,7 +21,7 @@
 
         <label for="email">Login:</label>
 <input class="control" type="email" id="email" name="email"
-       value="{{ old('email') }}" placeholder="Insira seu e-mail"
+       value="{{ old('email') }}" placeholder="Insira seu nome de usuário"
        autocomplete="username" autofocus required>
 
 <label for="password">Senha:</label>

@@ -54,9 +54,6 @@
   <main class="sige-main">
     <header class="topbar">
       <div class="topbar-title">@yield('title','SIGES')</div>
-      <div class="topbar-actions">
-        <button class="avatar-btn" title="Perfil"><span class="avatar-initial">👤</span></button>
-      </div>
     </header>
 
     <section class="content-card">

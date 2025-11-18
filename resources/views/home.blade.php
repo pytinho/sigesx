@@ -14,13 +14,13 @@
   </div>
 
   <div class="cards-row">
-    <div class="stat-card blue-card">
-      {{ $totalServidores ?? 0 }}
-      <span>Cadastros</span>
-    </div>
     <div class="stat-card yellow-card">
       {{ $totalPdfs ?? 0 }}
       <span>Arquivos</span>
+    </div>
+    <div class="stat-card blue-card">
+      {{ $totalServidores?? 0 }}
+      <span>Cadastros</span>
     </div>
   </div>
 

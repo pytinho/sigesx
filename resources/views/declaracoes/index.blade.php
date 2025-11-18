@@ -69,7 +69,7 @@
 
     {{-- Ações --}}
     <div class="actions col-12">
-      <button type="submit" class="btn-primary">Gerar PDF</button>
+      <button type="submit" class="btn-primary">Baixar PDF</button>
     </div>
   </form>
 
