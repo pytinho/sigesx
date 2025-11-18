@@ -41,9 +41,7 @@
       <button class="btn-primary" type="submit" formaction="{{ route('folha.pdf') }}" formmethod="POST">Gerar PDF</button>
     </div>
     @csrf
-    <div class="col-6" style="margin-top:4px;">
-      <span class="muted">Unidade Escolar: {{ $unidadeUnica ?? '—' }}</span>
-    </div>
+
   </form>
 
   @if($gerar && $servidores->count())

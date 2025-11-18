@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title','Declarações')
 
 @section('content')
@@ -39,7 +39,7 @@
       <div class="help">Digite o CPF e clique em Buscar.</div>
     </div>
 
-    <div class="form-group col-3"><!-- espaçador --></div>
+    <div class="form-group col-3"><!-- espa�ador --></div>
 
     {{-- Linha 2 --}}
     <div class="form-group col-6">
@@ -52,7 +52,7 @@
       <input type="text" id="email" class="form-control" readonly>
     </div>
 
-    <div class="form-group col-2"><!-- espaçador --></div>
+    <div class="form-group col-2"><!-- espa�ador --></div>
 
     {{-- Linha 3 --}}
     <div class="form-group col-4">
@@ -76,38 +76,43 @@
   <script>
     const routeLookup = @json(route('declaracoes.lookup'));
     const $cpf = document.getElementById('cpf');
+    const $btnBuscar = document.getElementById('btnCpfBuscar');
+    const $nome = document.getElementById('nome');
+    const $email = document.getElementById('email');
+    const $cargo = document.getElementById('cargo');
+    const $funcao = document.getElementById('funcao');
+    const $cpfHelp = (() => $cpf.closest('.form-group')?.querySelector('.help') || null)();
     function onlyDigits(v){ return (v||'').replace(/\D/g,''); }
 
-    $cpf.addEventListener('blur', async function(){
-      const cpf = onlyDigits(this.value);
+    async function lookupCpf() {
+      const cpf = onlyDigits($cpf.value);
       if (cpf.length !== 11) return;
-
       try {
         const r = await fetch(`${routeLookup}?cpf=${cpf}`, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
         if (!r.ok) {
-          const e = await r.json().catch(()=>({message:'Erro ao buscar CPF.'}));
-          alert(e.message || 'Erro ao buscar CPF.');
+          const e = await r.json().catch(()=>({message:'CPF invalido ou nao encontrado.'}));
+          if ($cpfHelp) { $cpfHelp.textContent = e.message || 'CPF invalido ou nao encontrado.'; $cpfHelp.style.color = '#dc2626'; }
+          if ($nome) $nome.value = '';
+          if ($email) $email.value = '';
+          if ($cargo) $cargo.value = '';
+          if ($funcao) $funcao.value = '';
           return;
         }
         const s = await r.json();
-        nome.value   = s.nome   || '';
-        email.value  = s.email  || '';
-        cargo.value  = s.cargo  || '';
-        funcao.value = s.funcao || '';
+        if ($cpfHelp) { $cpfHelp.textContent = 'Dados carregados com sucesso.'; $cpfHelp.style.color = '#16a34a'; }
+        if ($nome) $nome.value = s.nome || '';
+        if ($email) $email.value = s.email || '';
+        if ($cargo) $cargo.value = s.cargo || '';
+        if ($funcao) $funcao.value = s.funcao || '';
       } catch {
-        alert('Falha na consulta. Verifique sua conexão.');
+        if ($cpfHelp) { $cpfHelp.textContent = 'Falha na consulta. Verifique sua conexao.'; $cpfHelp.style.color = '#dc2626'; }
       }
-    });
-  </script>
-  <script>
-    (function(){
-      const $btnBuscar = document.getElementById('btnCpfBuscar');
-      const $cpf = document.getElementById('cpf');
-      if ($btnBuscar && $cpf) {
-        $btnBuscar.addEventListener('click', function(){
-          $cpf.dispatchEvent(new Event('blur'));
-        });
-      }
-    })();
+    }
+
+    $cpf.addEventListener('blur', lookupCpf);
+    if ($btnBuscar) $btnBuscar.addEventListener('click', lookupCpf);
   </script>
 @endsection
+
+
+
