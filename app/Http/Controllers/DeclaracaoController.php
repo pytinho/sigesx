@@ -1,48 +1,51 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
 use App\Models\Servidor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Barryvdh\DomPDF\Facade\Pdf; // barryvdh/laravel-dompdf
 
 class DeclaracaoController extends Controller
 {
     // Tipos exibidos no select da view
     private const TIPOS = [
-        'vinculo'     => 'Declaração de Vínculo',
-        'funcao'      => 'Declaração de Função',
-        'frequencia'  => 'Declaração de Frequência',
-        'inicio'      => 'Declaração de Início de Atividade', // ✅ novo tipo
+        'vinculo'      => 'Declaração de Vínculo',
+        'funcao'       => 'Declaração de Função',
+        'frequencia'   => 'Declaração de Frequência',
+        'inicio'       => 'Declaração de Início de Atividade',
+        'encerramento' => 'Declaração de Encerramento de Atividade',
     ];
 
     public function index()
     {
-        $tipos = self::TIPOS; // a view já itera em $tipos, então o select ganha a nova opção
+        $tipos = self::TIPOS;
         return view('declaracoes.index', compact('tipos'));
     }
 
-    // AJAX: dado um CPF, busca o servidor e retorna campos pra auto-preencher
+    // JSON: dado um CPF, busca o servidor e retorna campos para auto-preencher
     public function lookup(Request $request)
     {
-        abort_unless($request->ajax(), 404);
-
         $cpfDigits = preg_replace('/\D/', '', (string) $request->query('cpf'));
         if (strlen($cpfDigits) !== 11) {
-            return response()->json(['message' => 'CPF inválido.'], 422);
+            return response()->json(['ok' => false, 'message' => 'CPF inválido.']);
         }
 
         $s = $this->findByCpfDigits($cpfDigits);
         if (!$s) {
-            return response()->json(['message' => 'Servidor não encontrado.'], 404);
+            return response()->json(['ok' => false, 'message' => 'Servidor não encontrado.']);
         }
 
         return response()->json([
-            'nome'   => $s->nome,
-            'email'  => $s->email,
-            'cargo'  => $s->cargo,
-            'funcao' => optional($s->funcao)->nome,
+            'ok'   => true,
+            'data' => [
+                'nome'   => $s->nome,
+                'email'  => $s->email,
+                'cargo'  => $s->cargo,
+                'funcao' => optional($s->funcao)->nome,
+            ]
         ]);
     }
 
@@ -56,12 +59,19 @@ class DeclaracaoController extends Controller
 
         $cpfDigits = preg_replace('/\D/', '', $data['cpf']);
         if (strlen($cpfDigits) !== 11) {
-            return back()->withErrors(['cpf' => 'CPF inválido.'])->withInput();
+            throw ValidationException::withMessages(['cpf' => 'CPF inválido.']);
         }
 
         $servidor = $this->findByCpfDigits($cpfDigits);
         if (!$servidor) {
-            return back()->withErrors(['cpf' => 'Servidor não encontrado.'])->withInput();
+            throw ValidationException::withMessages(['cpf' => 'CPF não encontrado.']);
+        }
+
+        // Regra: não gerar declaração de encerramento se não houver dt_saida
+        if ($data['tipo'] === 'encerramento' && empty($servidor->dt_saida)) {
+            throw ValidationException::withMessages([
+                'tipo' => 'Servidor ainda ativo (sem data de saída). Não é possível gerar a declaração de encerramento.'
+            ]);
         }
 
         $payload = [
@@ -71,10 +81,12 @@ class DeclaracaoController extends Controller
             'agora'    => now()->locale('pt_BR'),
         ];
 
-        // ✅ Seleciona a view do PDF conforme o tipo
+        // Seleciona a view do PDF conforme o tipo
         $view = match ($data['tipo']) {
-            'inicio'     => 'declaracoes.pdf_inicio', // usa dt_entrada no texto "INICIOU"
-            default      => 'declaracoes.pdf',        // seus demais modelos atuais
+            'inicio'       => 'declaracoes.pdf_inicio',
+            'encerramento' => 'declaracoes.pdf_encerramento',
+            'vinculo'      => 'declaracoes.pdf_vinculo',
+            default        => 'declaracoes.pdf',
         };
 
         $pdf = Pdf::loadView($view, $payload)->setPaper('a4');
