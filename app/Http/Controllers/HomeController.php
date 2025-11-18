@@ -9,11 +9,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Contagens básicas
+        // estatísticas gerais home
         $totalServidores = Servidor::count();
         $totalPdfs       = Pdf::count();
 
-        // Itens recentes
+        // ultimas adições home
         $servidoresRecentes = Servidor::orderByDesc('id')->limit(5)->get();
         $pdfsRecentes       = Pdf::orderByDesc('id')->limit(5)->get();
 

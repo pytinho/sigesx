@@ -22,7 +22,7 @@ class DeclaracaoController extends Controller
         return view('declaracoes.index', compact('tipos'));
     }
 
-    // AJAX: dado um CPF, busca o servidor e retorna campos para auto-preencher
+    // retorna dados do servidor via AJAX
     public function lookup(Request $request)
     {
         abort_unless($request->ajax(), 404);
@@ -45,7 +45,7 @@ class DeclaracaoController extends Controller
         ]);
     }
 
-    // POST: gera o PDF
+    // gera o PDF
     public function gerar(Request $request)
     {
         $data = $request->validate([
@@ -77,7 +77,7 @@ class DeclaracaoController extends Controller
             'agora'    => now()->locale('pt_BR'),
         ];
 
-        // Seleciona a view do PDF conforme o tipo
+        // Seleciona tipo de declaração
         $view = match ($data['tipo']) {
             'inicio'       => 'declaracoes.pdf_inicio',       // usa dt_entrada
             'encerramento' => 'declaracoes.pdf_encerramento', // usa dt_saida

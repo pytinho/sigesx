@@ -35,7 +35,6 @@ class FolhaPontoController extends Controller
             ];
         }
 
-        // Unidade única (somente se houver exatamente uma)
         $unidades = Servidor::query()
             ->whereNotNull('unidade_escolar')
             ->where('unidade_escolar', '!=', '')

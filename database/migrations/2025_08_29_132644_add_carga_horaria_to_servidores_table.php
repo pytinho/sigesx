@@ -8,7 +8,6 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('servidores', function (Blueprint $table) {
-            // horas/semana; ajuste o range conforme sua regra
             $table->unsignedSmallInteger('carga_horaria')->nullable()->after('vinculo');
         });
     }

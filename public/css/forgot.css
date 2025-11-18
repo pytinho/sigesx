@@ -1,0 +1,18 @@
+/* ==== Link padrão SIGES (Voltar ao login) ==== */
+.return-link {
+  font: var(--forgot-font);
+  color: var(--forgot-color);
+  text-decoration: underline;
+  display: inline-block;
+  margin-top: 6px;
+  transition: color .15s ease, opacity .15s ease;
+}
+
+.return-link:hover {
+  color: var(--forgot-hover);
+  opacity: .85;
+}
+
+.return-link:active {
+  opacity: .6;
+}

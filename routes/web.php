@@ -24,6 +24,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])
         ->middleware('throttle:5,1')
         ->name('login.perform');
+
+    Route::view('/esqueci-minha-senha', 'auth.forgot')->name('password.request');
 });
 
 Route::middleware(['auth', 'prevent-back-history'])->group(function () {

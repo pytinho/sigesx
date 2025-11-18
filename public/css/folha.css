@@ -1,12 +1,13 @@
 ﻿/* ===== FILTROS ===== */
 .folha-filtros {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr)); /* 6 colunas reais */
   gap: 8px 12px;
   align-items: end;
   margin-bottom: 14px;
 }
 
+/* Labels */
 .folha-filtros .form-group label {
   font-size: 0.88rem;
   color: #0b3a73;
@@ -15,6 +16,7 @@
   display: block;
 }
 
+/* Inputs */
 .folha-filtros .form-control {
   height: 36px;
   padding: 4px 8px;
@@ -23,21 +25,27 @@
   font-size: 0.9rem;
 }
 
-/* ===== COLUNAS ===== */
+/* Tamanhos de colunas */
 .folha-filtros .col-2 { grid-column: span 2; }
 .folha-filtros .col-3 { grid-column: span 3; }
 .folha-filtros .col-6 { grid-column: span 6; }
 
-/* ===== BOTOES (versão compacta) ===== */
+
+#cpf {
+  max-width: 190px;
+}
+
+/* ===== BOTÕES ===== */
 .btn-primary, .btn-secondary {
   border: none;
   border-radius: 5px;
-  padding: 4px 10px;      /* antes: 6px 12px */
+  padding: 4px 12px;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.85rem;     /* antes: 0.9rem */
-  width: 100%;
-  height: 34px;           /* antes: 40px */
+  font-size: 0.85rem;
+  width: auto;          /* não ocupa mais toda a coluna */
+  min-width: 120px;
+  height: 34px;
   line-height: 1.1;
 }
 
@@ -47,9 +55,7 @@
   transition: background 0.2s ease;
 }
 
-.btn-primary:hover {
-  background: #1339a3;
-}
+.btn-primary:hover { background: #1339a3; }
 
 .btn-secondary {
   background: #e5e7eb;
@@ -57,12 +63,16 @@
   transition: background 0.2s ease;
 }
 
-.btn-secondary:hover {
-  background: #d6d8db;
+.btn-secondary:hover { background: #d6d8db; }
+
+/* Linha dos botões */
+.btn-row {
+  display: flex;
+  gap: 8px;
+  align-items: end;
 }
 
-
-/* ===== SHEET (BLOCOS) ===== */
+/* ===== SHEETS ===== */
 .sheet {
   break-inside: avoid;
   page-break-inside: avoid;
@@ -111,19 +121,16 @@
   text-align: left;
 }
 
-/* Altura maior nas linhas da folha */
 .tbl .row-entrada td { height: 28px; }
-.tbl .row-saida td { height: 28px; }
-.tbl .row-ass td { height: 34px; }
+.tbl .row-saida td    { height: 28px; }
+.tbl .row-ass td      { height: 34px; }
 
 .tbl thead th {
   background: #f8fafc;
   font-weight: 600;
 }
 
-.wrap {
-  overflow: auto;
-}
+.wrap { overflow: auto; }
 
 /* ===== IMPRESSÃO ===== */
 @media print {
@@ -131,7 +138,3 @@
   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .sheet { box-shadow: none; border-color: #d1d5db; }
 }
-
-/* Linha de botoes simetricos */
-.btn-row { display:grid; grid-template-columns: repeat(3, minmax(120px,1fr)); gap: 8px; align-items: end; }
-

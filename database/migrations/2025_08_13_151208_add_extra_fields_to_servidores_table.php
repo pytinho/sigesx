@@ -7,7 +7,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('servidores', function (Blueprint $table) {
-            // só adiciona se não existir (idempotente p/ ambientes)
+            // só adiciona se não existir 
             if (!Schema::hasColumn('servidores', 'naturalidade'))  $table->string('naturalidade')->nullable()->after('dt_nascimento');
             if (!Schema::hasColumn('servidores', 'cep'))           $table->string('cep', 20)->nullable()->after('naturalidade');
             if (!Schema::hasColumn('servidores', 'endereco'))      $table->string('endereco')->nullable()->after('cep');

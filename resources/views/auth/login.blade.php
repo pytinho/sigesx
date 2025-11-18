@@ -32,10 +32,16 @@
         class="eye"
         aria-label="Mostrar senha"
         title="Mostrar senha"
-        data-show="🙊"   {{-- emoji quando a senha está visível --}}
-        data-hide="🙈">  {{-- emoji quando a senha está oculta  --}}
+        data-show="🙊"   
+        data-hide="🙈">  
 </button>
 </div>
+
+@if (Route::has('password.request'))
+<p class="login-links">
+  <a href="{{ route('password.request') }}">Esqueci minha senha</a>
+</p>
+@endif
 
 <button class="btn-primary" type="submit">Entrar</button>
 
@@ -44,10 +50,10 @@
   const eye  = document.querySelector('.eye');
   const pass = document.getElementById('password');
 
-  const EMOJI_VISIBLE = eye.dataset.show || '🙊'; // quando a senha está visível (type="text")
-  const EMOJI_HIDDEN  = eye.dataset.hide || '🙈'; // quando a senha está oculta  (type="password")
+  const EMOJI_VISIBLE = eye.dataset.show || '🙊'; 
+  const EMOJI_HIDDEN  = eye.dataset.hide || '🙈'; 
 
-  // sincroniza o botão com o estado inicial do input
+ 
   function syncButton() {
     const hidden = pass.type === 'password';
     eye.textContent = hidden ? EMOJI_HIDDEN : EMOJI_VISIBLE;
@@ -58,11 +64,11 @@
   syncButton();
 
   eye.addEventListener('click', () => {
-    const willReveal = pass.type === 'password'; // vai revelar?
+    const willReveal = pass.type === 'password'; 
     pass.type = willReveal ? 'text' : 'password';
     syncButton();
 
-    // mantém o foco e cursor no fim
+    
     pass.focus();
     const end = pass.value.length;
     pass.setSelectionRange(end, end);

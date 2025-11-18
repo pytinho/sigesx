@@ -9,19 +9,25 @@
 @section('content')
 <div>
   <form method="GET" class="folha-filtros no-print">
+
     <div class="form-group">
       <label for="mes">Mês</label>
       <select id="mes" name="mes" class="form-control">
         @for($m=1;$m<=12;$m++)
-          <option value="{{ $m }}" {{ (int)$mes === $m ? 'selected' : '' }}>{{ str_pad($m,2,'0',STR_PAD_LEFT) }}</option>
+          <option value="{{ $m }}" {{ (int)$mes === $m ? 'selected' : '' }}>
+            {{ str_pad($m,2,'0',STR_PAD_LEFT) }}
+          </option>
         @endfor
       </select>
     </div>
+
     <div class="form-group">
       <label for="ano">Ano</label>
       <input id="ano" name="ano" type="number" class="form-control" value="{{ $ano }}" min="1990" max="2100" />
     </div>
-    <div class="col-3 form-group">
+
+    {{-- CPF MENOR (col-2) --}}
+    <div class="col-2 form-group">
       <label for="cpf">CPF</label>
       <input id="cpf" name="cpf" type="text" class="form-control" value="{{ $cpf ?? '' }}" placeholder="Somente números" />
     </div>
@@ -31,15 +37,19 @@
       <select id="funcao_id" name="funcao_id" class="form-control">
         <option value="">Todas</option>
         @foreach($funcoes as $f)
-          <option value="{{ $f->id }}" {{ (string)($funcaoId ?? '') === (string)$f->id ? 'selected' : '' }}>{{ $f->nome }}</option>
+          <option value="{{ $f->id }}" {{ (string)($funcaoId ?? '') === (string)$f->id ? 'selected' : '' }}>
+            {{ $f->nome }}
+          </option>
         @endforeach
       </select>
     </div>
 
-    <div class="col-6 btn-row">
+    {{-- BOTÕES MENOS LARGOS --}}
+    <div class="col-4 btn-row">
       <button class="btn-primary" name="gerar" value="1" type="submit">Gerar</button>
-      <button class="btn-primary" type="submit" formaction="{{ route('folha.pdf') }}" formmethod="POST">Gerar PDF</button>
+      <button class="btn-primary" type="submit" formaction="{{ route('folha.pdf') }}" formmethod="POST">Baixar PDF</button>
     </div>
+
     @csrf
 
   </form>
@@ -50,7 +60,10 @@
         <div class="sheet-header">
           <div>
             <div class="sheet-title">Folha de Ponto - {{ sprintf('%02d/%04d', $mes, $ano) }}</div>
-            <div class="muted">{{ $s->nome }} — {{ $s->cargo }} {{ optional($s->funcao)->nome ? ' • '.optional($s->funcao)->nome : '' }}</div>
+            <div class="muted">
+              {{ $s->nome }} — {{ $s->cargo }}
+              {{ optional($s->funcao)->nome ? ' • '.optional($s->funcao)->nome : '' }}
+            </div>
             @if($s->unidade_escolar)
               <div class="muted">Unidade: {{ $s->unidade_escolar }}</div>
             @endif
@@ -68,6 +81,7 @@
                 @endforeach
               </tr>
             </thead>
+
             <tbody>
               <tr class="row-entrada">
                 <td class="sticky-col">Entrada</td>
@@ -75,12 +89,14 @@
                   <td>&nbsp;</td>
                 @endforeach
               </tr>
+
               <tr class="row-saida">
                 <td class="sticky-col">Saída</td>
                 @foreach($dias as $d)
                   <td>&nbsp;</td>
                 @endforeach
               </tr>
+
               <tr class="row-ass">
                 <td class="sticky-col">Obs./Ass.</td>
                 @foreach($dias as $d)
@@ -103,10 +119,13 @@
         </div>
       </div>
     @endforeach
+
   @elseif($gerar)
     <div class="muted">Nenhum servidor encontrado para os filtros informados.</div>
+
   @else
     <div class="muted">Selecione mês/ano e filtros (CPF/Cargo/Função), depois clique em Gerar.</div>
+
   @endif
 </div>
 @endsection

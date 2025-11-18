@@ -15,9 +15,9 @@ class PdfController extends Controller
     $q   = trim((string) $req->input('q', ''));
     $ano = $req->integer('ano');
 
-    // ordenação (whitelist)
-    $sort = $req->get('sort', 'ano');      // 'ano' | 'titulo' | 'size'
-    $dir  = $req->get('dir',  'desc');     // 'asc' | 'desc'
+    // filtro ordenar
+    $sort = $req->get('sort', 'ano');      
+    $dir  = $req->get('dir',  'desc');     
     $allowed = ['ano','titulo','size'];
     if (!in_array($sort, $allowed, true))  { $sort = 'ano'; }
     $dir = $dir === 'asc' ? 'asc' : 'desc';
@@ -25,10 +25,10 @@ class PdfController extends Controller
     $pdfs = Pdf::query()
         ->when($ano, fn($qb) => $qb->where('ano', $ano))
         ->when($q !== '', fn($qb) => $qb->where('titulo', 'like', "%{$q}%"))
-        ->orderBy($sort, $dir)             // ordena pelo campo escolhido
-        ->orderBy('id', 'desc')            // desempate estável
+        ->orderBy($sort, $dir)             
+        ->orderBy('id', 'desc')            
         ->paginate(24)
-        ->withQueryString();               // mantém filtros/ordem na paginação
+        ->withQueryString();               
 
     return view('pdfs.index', compact('pdfs'));
 }
@@ -38,7 +38,7 @@ class PdfController extends Controller
     $data = $req->validate([
       'titulo' => ['required','string','max:255'],
       'ano'    => ['required','integer','min:1990','max:2100'],
-      'arquivo'=> ['required','file','mimetypes:application/pdf','max:25600'], // até ~25MB
+      'arquivo'=> ['required','file','mimetypes:application/pdf','max:25600'], 
     ]);
 
     $file = $data['arquivo'];

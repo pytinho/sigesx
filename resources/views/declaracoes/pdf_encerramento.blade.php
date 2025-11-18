@@ -33,7 +33,7 @@
   </head>
 <body>
 
-  {{-- Cabeçalho institucional fixo --}}
+  {{-- Cabeçalho institucional --}}
   <div class="cabec">
     <div class="l1">PREFEITURA MUNICIPAL DE PALMAS</div>
     <div class="l2">SECRETARIA MUNICIPAL DA EDUCAÇÃO</div>
@@ -44,7 +44,7 @@
   <div class="titulo">{{ $titulo }}</div>
   <div class="sep"></div>
 
-  {{-- Texto principal com a data de saída --}}
+  {{-- Texto principal --}}
   <p class="texto">
     Declaramos, para fins de comprovação junto à Secretaria Municipal da Educação, que o(a) servidor(a) abaixo qualificado(a) 
     <strong>ENCERROU</strong> suas atividades nesta Unidade Escolar no dia

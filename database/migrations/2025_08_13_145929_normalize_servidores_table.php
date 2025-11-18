@@ -17,7 +17,7 @@ return new class extends Migration
         if (Schema::hasTable('servidores_table') && !Schema::hasTable('servidores')) {
             Schema::rename('servidores_table', 'servidores');
     }
-    // Se por algum motivo ficaram duas, apaga a errada:
+
     if (Schema::hasTable('servidors') && Schema::hasTable('servidores')) {
         Schema::drop('servidors');
     }
@@ -27,6 +27,6 @@ return new class extends Migration
 }
 public function down(): void
 {
-    // opcional: não precisa renomear de volta
+   
 }
 };

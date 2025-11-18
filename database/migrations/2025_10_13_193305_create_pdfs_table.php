@@ -8,13 +8,13 @@ return new class extends Migration {
   public function up(): void {
     Schema::create('pdfs', function (Blueprint $table) {
       $table->id();
-      $table->string('titulo');               // nome amigável
-      $table->unsignedSmallInteger('ano');    // opcional, ajuda organizar
+      $table->string('titulo');               
+      $table->unsignedSmallInteger('ano');    
       $table->string('disk')->default('local');
-      $table->string('path');                 // ex: pdfs/2025/uuid.pdf
-      $table->string('mime');                 // application/pdf
-      $table->unsignedBigInteger('size');     // bytes
-      $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete(); // quem subiu (se quiser)
+      $table->string('path');                 
+      $table->string('mime');                 
+      $table->unsignedBigInteger('size'); 
+      $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete(); 
       $table->timestamps();
 
       $table->index(['ano']);
