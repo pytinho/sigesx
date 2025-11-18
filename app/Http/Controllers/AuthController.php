@@ -19,17 +19,22 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $cred = $request->validate([
-            'email'    => ['required','email'],
+            'login'    => ['required','string'],
             'password' => ['required','string'],
         ]);
 
-        if (Auth::attempt($cred, $request->boolean('remember'))) {
+        $credentials = [
+            'email'    => $cred['login'],
+            'password' => $cred['password'],
+        ];
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended(route('home'));
         }
 
         throw ValidationException::withMessages([
-            'email' => 'Credenciais inválidas.',
+            'login' => 'Credenciais inválidas.',
         ]);
     }
 
@@ -41,4 +46,3 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 }
-

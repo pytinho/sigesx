@@ -19,9 +19,9 @@
       <form method="POST" action="{{ route('login.perform') }}" novalidate>
         @csrf
 
-        <label for="email">Login:</label>
-<input class="control" type="email" id="email" name="email"
-       value="{{ old('email') }}" placeholder="Insira seu nome de usuário"
+        <label for="login">Usuário:</label>
+<input class="control" type="text" id="login" name="login"
+       value="{{ old('login') }}" placeholder="Insira seu usuário de acesso"
        autocomplete="username" autofocus required>
 
 <label for="password">Senha:</label>
