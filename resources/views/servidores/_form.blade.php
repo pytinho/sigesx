@@ -13,7 +13,7 @@
 
 <div class="form-grid">
   <div class="form-group col-6">
-    <label for="nome">Nome *</label>
+    <label for="nome">Nome</label>
     <input type="text" id="nome" name="nome"
            class="form-control @error('nome') is-invalid @enderror"
            placeholder="ex: João Alves Costa da Silva"
@@ -22,7 +22,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="cpf">CPF *</label>
+    <label for="cpf">CPF</label>
     <input type="text" id="cpf" name="cpf"
            class="form-control @error('cpf') is-invalid @enderror"
            placeholder="000.000.000-00"
@@ -31,7 +31,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="dt_nascimento">Dt Nascimento *</label>
+    <label for="dt_nascimento">Dt Nascimento</label>
     <input type="text" id="dt_nascimento" name="dt_nascimento"
            class="form-control @error('dt_nascimento') is-invalid @enderror"
            placeholder="dd/mm/aaaa"
@@ -40,11 +40,11 @@
   </div>
 
   <div class="form-group col-2">
-    <label for="uf">UF *</label>
+    <label for="uf">UF</label>
     <select id="uf" name="uf"
             class="form-control @error('uf') is-invalid @enderror"
             data-old-uf="{{ $v('uf') }}" required>
-      <option value="">Selecione *</option>
+      <option value="">Selecione</option>
       @foreach (['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'] as $uf)
         <option value="{{ $uf }}" @selected($v('uf') == $uf)>{{ $uf }}</option>
       @endforeach
@@ -53,7 +53,7 @@
   </div>
 
   <div class="form-group col-4">
-    <label for="cidade">Cidade *</label>
+    <label for="cidade">Cidade</label>
     <select id="cidade" name="cidade"
             class="form-control @error('cidade') is-invalid @enderror"
             data-old-cidade="{{ $v('cidade') }}" {{ $v('uf') ? '' : 'disabled' }} required>
@@ -63,7 +63,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="email">E-mail *</label>
+    <label for="email">E-mail</label>
     <input type="email" id="email" name="email"
            class="form-control @error('email') is-invalid @enderror"
            placeholder="exemplo@gmail.com"
@@ -72,7 +72,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="contato">Contato *</label>
+    <label for="contato">Contato</label>
     <input type="text" id="contato" name="contato"
            class="form-control @error('contato') is-invalid @enderror"
            placeholder="(__) _____-____"
@@ -82,7 +82,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="cep">CEP *</label>
+    <label for="cep">CEP</label>
     <input type="text" id="cep" name="cep"
            class="form-control @error('cep') is-invalid @enderror"
            placeholder="00000-000"
@@ -92,7 +92,7 @@
   </div>
 
   <div class="form-group col-6">
-    <label for="endereco">Endereço *</label>
+    <label for="endereco">Endereço</label>
     <input type="text" id="endereco" name="endereco"
            class="form-control @error('endereco') is-invalid @enderror"
            placeholder="Rua Sol Nascente"
@@ -101,7 +101,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="lote">Lote *</label>
+    <label for="lote">Lote</label>
     <input type="text" id="lote" name="lote"
            class="form-control @error('lote') is-invalid @enderror"
            placeholder="00"
@@ -110,7 +110,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="funcao_id">Função *</label>
+    <label for="funcao_id">Função</label>
     <select id="funcao_id" name="funcao_id"
             class="form-control @error('funcao_id') is-invalid @enderror" required>
       <option value="">Selecione</option>
@@ -122,7 +122,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="cargo">Cargo *</label>
+    <label for="cargo">Cargo</label>
     <input type="text" id="cargo" name="cargo"
            class="form-control @error('cargo') is-invalid @enderror"
            placeholder="ex: Agente Adm Educacional"
@@ -131,7 +131,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="vinculo">Vínculo *</label>
+    <label for="vinculo">Vínculo</label>
     <select id="vinculo" name="vinculo"
             class="form-control @error('vinculo') is-invalid @enderror" required>
       <option value="">Selecione</option>
@@ -143,7 +143,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="dt_entrada">Data de entrada *</label>
+    <label for="dt_entrada">Data de entrada</label>
     <input type="text" id="dt_entrada" name="dt_entrada"
            class="form-control @error('dt_entrada') is-invalid @enderror"
            placeholder="dd/mm/aaaa"
@@ -162,7 +162,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="carga_horaria">Carga horária * (h/semana)</label>
+    <label for="carga_horaria">Carga horária (h/semana)</label>
     <input
       type="number"
       id="carga_horaria"

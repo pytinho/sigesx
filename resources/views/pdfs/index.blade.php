@@ -48,7 +48,7 @@
 
     {{-- Campo simples de upload (mostra nome do arquivo abaixo) --}}
     <div class="form-group col-12 mb-3">
-      <label for="arquivo" class="mb-1">Arquivo (PDF) *</label>
+      <label for="arquivo" class="mb-1">Arquivo (PDF) </label>
       <input
         type="file"
         id="arquivo"
@@ -63,7 +63,7 @@
 
     {{-- Linha com Título (4), Ano (2) e Botão (2) --}}
     <div class="form-group col-4">
-      <label for="titulo">Título *</label>
+      <label for="titulo">Título </label>
       <input
         type="text"
         id="titulo"
@@ -76,7 +76,7 @@
     </div>
 
     <div class="form-group col-2">
-      <label for="ano">Ano *</label>
+      <label for="ano">Ano </label>
       <input
         type="number"
         id="ano"
