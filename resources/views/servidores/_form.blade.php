@@ -1,5 +1,4 @@
 @php
-
   $servidor = $servidor ?? null;
   $v = function ($name, $default = '') use ($servidor) {
       return old($name, $servidor?->$name ?? $default);
@@ -41,7 +40,7 @@
   </div>
 
   <div class="form-group col-2">
-    <label for="uf">UF</label>
+    <label for="uf">UF *</label>
     <select id="uf" name="uf"
             class="form-control @error('uf') is-invalid @enderror"
             data-old-uf="{{ $v('uf') }}" required>
@@ -153,7 +152,7 @@
   </div>
 
   <div class="form-group col-3">
-    <label for="dt_saida">Data de saída *</label>
+    <label for="dt_saida">Data de saída</label>
     <input type="text" id="dt_saida" name="dt_saida"
            class="form-control @error('dt_saida') is-invalid @enderror"
            placeholder="dd/mm/aaaa"
@@ -161,31 +160,32 @@
     @error('dt_saida')<div class="invalid-feedback">{{ $message }}</div>@enderror
     <small class="help">Preencha quando houver desligamento.</small>
   </div>
-  
+
   <div class="form-group col-3">
-      <label for="carga_horaria">Carga horária * (h/semana)</label>
-      <input
-        type="number"
-        id="carga_horaria"
-        name="carga_horaria"
-        class="form-control @error('carga_horaria') is-invalid @enderror"
-        placeholder="40"
-        min="1"
-        max="60"
-        step="1"
-        inputmode="numeric"
-        value="{{ $v('carga_horaria') }}"
-        required
-      >
-      <small class="help">Informe em horas semanais (ex.: 20, 30, 40).</small>
-      @error('carga_horaria')<div class="invalid-feedback">{{ $message }}</div>@enderror
-    </div>
+    <label for="carga_horaria">Carga horária * (h/semana)</label>
+    <input
+      type="number"
+      id="carga_horaria"
+      name="carga_horaria"
+      class="form-control @error('carga_horaria') is-invalid @enderror"
+      placeholder="40"
+      min="1"
+      max="60"
+      step="1"
+      inputmode="numeric"
+      value="{{ $v('carga_horaria') }}"
+      required
+    >
+    <small class="help">Informe em horas semanais (ex.: 20, 30, 40).</small>
+    @error('carga_horaria')<div class="invalid-feedback">{{ $message }}</div>@enderror
+  </div>
+
   <div class="form-group col-6">
     <label for="unidade_escolar">Unidade Escolar</label>
     <input type="text" id="unidade_escolar" name="unidade_escolar"
            class="form-control @error('unidade_escolar') is-invalid @enderror"
            placeholder="Escola Municipal Luiz Gonzaga"
-           value="{{ $v('unidade_escolar') }}"readonly>
+           value="{{ $v('unidade_escolar') }}" readonly>
     @error('unidade_escolar')<div class="invalid-feedback">{{ $message }}</div>@enderror
   </div>
 

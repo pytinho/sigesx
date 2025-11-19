@@ -3,6 +3,8 @@ import $ from 'jquery';
 const REQUIRED_SELECTOR = 'input[required], select[required], textarea[required]';
 const EMPTY_CLASS = 'is-empty';
 const FEEDBACK_CLASS = 'field-feedback';
+const CLIENT_INVALID_CLASS = 'is-invalid';
+const CLIENT_INVALID_FLAG = 'clientInvalid';
 
 // Adds a visual asterisk to labels of required fields
 function markRequiredFields() {
@@ -50,15 +52,32 @@ function clearFeedback($group) {
   $group.find(`.${FEEDBACK_CLASS}`).remove();
 }
 
+function markClientInvalid($field) {
+  if ($field.data(CLIENT_INVALID_FLAG)) {
+    return;
+  }
+  $field.addClass(CLIENT_INVALID_CLASS).data(CLIENT_INVALID_FLAG, true);
+  $field.attr('aria-invalid', 'true');
+}
+
+function clearClientInvalid($field) {
+  if (!$field.data(CLIENT_INVALID_FLAG)) {
+    return;
+  }
+  $field.removeClass(CLIENT_INVALID_CLASS).removeData(CLIENT_INVALID_FLAG);
+  $field.removeAttr('aria-invalid');
+}
+
 function validateField($field) {
   const $group = $field.closest('.form-group');
   const hasServerFeedback = $group.find('.invalid-feedback').not(`.${FEEDBACK_CLASS}`).length > 0;
-  const message = $field.data('empty-message') || 'Campo obrigatório.';
+  const message = $field.data('empty-message') || 'Campo obrigatório';
   const empty = isFieldEmpty($field);
 
   if (empty) {
     $field.addClass(EMPTY_CLASS);
     if (!hasServerFeedback) {
+      markClientInvalid($field);
       ensureFeedback($group, message);
     }
     return true;
@@ -66,6 +85,7 @@ function validateField($field) {
 
   $field.removeClass(EMPTY_CLASS);
   if (!hasServerFeedback) {
+    clearClientInvalid($field);
     clearFeedback($group);
   }
   return false;
